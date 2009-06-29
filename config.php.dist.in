@@ -1,0 +1,23 @@
+<?php
+$config = array(
+'template'       => 'offlike',
+'default_lang'   => 'ru',        // Default lang // Don't change
+'lang'           => 'ru',        // Site Default lang
+'db_type'        => 'mysql',
+'db_host'        => 'localhost',
+'db_port'        => '3306',
+'db_username'    => 'mangos',
+'db_password'    => 'mangos',
+'db_name'        => 'realmd',
+'db_encoding'    => 'utf8'     // don't change
+);
+
+$news_forum_id = 1;            // forum id for "news"
+$bugs_forum_id = 2;            // forum id for "bugtracker"
+$rules_forum_id = 3;           // forum id for "rules"
+$faq_forum_id =4;              // forum id for "faq"
+$patchs_forum_id=5;            // forum id for "patchs notes"
+
+$templates = array('offlike');
+
+?>
