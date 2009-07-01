@@ -1,1 +1,0 @@
-alter table `account_extend` add column `userbar` varchar(100) CHARSET utf8 COLLATE utf8_general_ci NULL after `activation_code`;
