@@ -69,15 +69,20 @@ if($_GET['action']=='doupdate'){
     redirect($com_content['admin']['components'][2],1);
 }
 
+$base_dir ='./core/mangos_UpdateFields/';
 if($_GET['action']=='mfupdate'){
 	$bResult = true;
-	
-	ParseUpdateFields ("./core/mangos_scripts/scripts/243/UpdateFields.h", "243/UpdateFields.php" );
-	ParseUpdateFields ("./core/mangos_scripts/scripts/303/UpdateFields.h", "303/UpdateFields.php" );
-	ParseUpdateFields ("./core/mangos_scripts/scripts/308/UpdateFields.h", "308/UpdateFields.php" );
-	ParseUpdateFields ("./core/mangos_scripts/scripts/309/UpdateFields.h", "309/UpdateFields.php" );
-	ParseUpdateFields ("./core/mangos_scripts/scripts/313/UpdateFields.h", "313/UpdateFields.php" );
-	
+	    if ($handle = opendir($base_dir)) {
+        while (false !== ($file = readdir($handle))) {
+            if (is_file($base_dir.$file) && $file != "Thumbs.db" && $file != "index.html") {
+                if (stripos($file, "_UpdateFields.h") !== false) {
+                  $ver = str_ireplace("_UpdateFields.h", "", $file);
+                  ParseUpdateFields ($base_dir.$file, $ver."_UpdateFields.php");
+                }
+            }
+        }
+        closedir($handle);
+    }	
 	redirect($com_content['admin']['components'][2],1);
 }
 
