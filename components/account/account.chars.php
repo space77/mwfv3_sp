@@ -132,7 +132,7 @@ require_once 'core/common.php';
 			}
 	
 	if ($realm_info['Version']!==''){
-			require_once 'core/cache/'.$realm_info['Version'].'/UpdateFields.php';		
+			require_once 'core/cache/'.$realm_info['Version'].'_UpdateFields.php';		
 		} else {
 			require_once 'core/cache/UpdateFields.php';	
 		}
