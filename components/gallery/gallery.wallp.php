@@ -34,7 +34,7 @@ if (!$allowview){
       $isok = false;
     }
     if ($isok) {
-      if(copy($_FILES["filename"]["tmp_name"], "./images/wallpapers/".$img)) {
+      if(copy($_FILES["filename"]["tmp_name"], $config['wallpapers_path'].$img)) {
         $DB->query("INSERT INTO `gallery_wallp` SET `img`='".$img."', `orgfname`='".$orgfname."', `autor`='".$autor."', `autorid`='".$autorid."', `date`='".$date."'");
       } else {
         output_message('alert','<b>'.$lang['Uploaderror'].'</b><meta http-equiv=refresh content="2;url=index.php?n=gallery&sub=wallp">');
@@ -42,7 +42,21 @@ if (!$allowview){
       }
     } 
   }
-  $total=$DB->selectcell("SELECT COUNT(*) FROM `gallery_wallp`");
+  
   $query=$DB->select("SELECT * FROM `gallery_wallp`");
+  
+  function concatpath($var) {
+    global $config;
+    $var['img'] = $config['wallpapers_path'].$var['img'];
+    return $var;
+  }
+  
+  function checkfile($var) {
+    return (file_exists($var['img']));
+  }
+  
+  $query = array_map("concatpath", $query);
+  $query = array_filter ($query, "checkfile");
+  $total=count($query);
 }
 ?>

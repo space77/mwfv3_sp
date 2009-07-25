@@ -1,35 +1,3 @@
-<?php
-/*
-    $img=$_FILES["filename"]["name"];
-    $comment=$message;
-    $autor=$user['username'];  
-    $date=date("Y-m-d");
-
-$db = array(
-	'host' => 'localhost',			// Хост
-	'user' => 'root',				// Юзер
-	'password' => '0m364nt5c',		// Пароль
-	'db_realmd' => 'edb_realmd_10',	// Mangos db	
-);
-mysql_connect($db['host'], $db['user'], $db['password'])or die("cant connect to database");
-@mysql_select_db($db['db_realmd'])or die("Не могу выбрать базу данных");
-  if ($doadd=="") {
-  } else {
-     if($_FILES["filename"]["size"] > 1024*0.2*1024) {
-     echo $lang['Filesizes'];
-     exit; }
-     if($_FILES["filename"]["type"]!="image/jpeg") {
-     echo $lang['Filetype'];
-     echo ("<br>"); }
-     if(copy($_FILES["filename"]["tmp_name"],
-     "./images/Screenshots/".$_FILES["filename"]["name"])) {
-     mysql_query("INSERT INTO gallery set img='".$img."', comment='".$comment."', autor='".$autor."', date='".$date."'");
-     } else {
-     echo $lang['Uploaderror']; } }
-mysql_close();
-*/
-?>
-
 <?php if($allowview){ ?>
   <table border = 0 width=100%>
   <tr>
@@ -63,7 +31,7 @@ mysql_close();
     <tr>
     <td background="./templates/offlike/images/gallery/_l.gif"><img src="/i/_.gif" height="1" width="1"></td>
     <td>
-    <a style="cursor: pointer;" onclick="javascript:void(window.open('./images/Screenshots/<?php echo $result['img']; ?>'))" target="_blank"><img style="width: 235px; height: 175px;" alt="<?PHP echo $result['comment'];?>" src="./images/Screenshots/<?PHP echo $result['img'];?>" border="0"></a>
+    <a style="cursor: pointer;" onclick="javascript:void(window.open('<?php echo $result['img']; ?>'))" target="_blank"><img style="width: 235px; height: 175px;" alt="<?PHP echo $result['comment'];?>" src="<?PHP echo $result['img'];?>" border="0"></a>
     </td>
     <td background="./templates/offlike/images/gallery/_r.gif"><img src="/i/_.gif" height="1" width="1"></td>
     </tr>

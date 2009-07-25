@@ -1,21 +1,6 @@
 <?php
 if(INCLUDED!==true)exit;
 
-function random_screenshot1(){
-  $fa = array();
-  if ($handle = opendir('images/screenshots/')) {
-    while (false !== ($file = readdir($handle))) { 
-        if ($file != "thumbs" && $file != "." && $file != ".." && $file != "Thumbs.db" && $file != "index.html") { 
-            $fa[] = $file; 
-        } 
-    }
-    closedir($handle); 
-  }
-  $fnum = count($fa);
-  $fpos = rand(0, $fnum-1);
-  return $fa[$fpos];
-}
-
 $items_per_page = 16; // Output items limit
 $defaultOpen = 5; // First N items that are "opened" by default.
 $postnum = 0;
@@ -36,9 +21,12 @@ $alltopics = $DB->select("
 $number = $DB->selectcell("SELECT COUNT(*) FROM `gallery_scr` ORDER BY `id`;");
 if ($number>0){
   $query=$DB->select("SELECT `img` FROM `gallery_scr` ORDER BY `id` LIMIT ?d, 1", rand(0,$number-1));
-  echo ($number);
   foreach ($query as $result){
-    $rnd_screenshot = '<a href="./images/Screenshots/'.$result["img"].'" target="_blank"><img src="./images/Screenshots/'.$result["img"].'"  height=145 width=195></a>';
+    $rnd_screenshot = $config['screenshots_path'].$result['img'];
+    if(!file_exists($rnd_screenshot)){
+      $rnd_screenshot = 'images/EmptyScreenShot.jpg';
+    }
+    $rnd_screenshot = '<a href="'.$rnd_screenshot.'" target="_blank"><img src="'.$rnd_screenshot.'"  height=145 width=195></a>';
   }
 }
 ?>

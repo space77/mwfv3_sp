@@ -31,7 +31,7 @@
     <tr>
     <td background="./templates/offlike/images/gallery/_l.gif"><img src="/i/_.gif" height="1" width="1"></td>
     <td>
-    <a style="cursor: pointer;" onclick="javascript:void(window.open('./images/wallpapers/<?php echo  $result['img'];?>'))" target="_blank"><img style="width: 235px; height: 175px;" alt="<?php echo $result['orgfname'];?>" src="./images/wallpapers/<?PHP echo $result['img'];?>" border="0"></a>
+    <a style="cursor: pointer;" onclick="javascript:void(window.open('<?php echo  $result['img'];?>'))" target="_blank"><img style="width: 235px; height: 175px;" alt="<?php echo $result['orgfname'];?>" src="<?PHP echo $result['img'];?>" border="0"></a>
     </td>
     <td background="./templates/offlike/images/gallery/_r.gif"><img src="/i/_.gif" height="1" width="1"></td>
     </tr>

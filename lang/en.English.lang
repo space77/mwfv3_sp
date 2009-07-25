@@ -398,3 +398,5 @@
 |=|b_permanent :=: Permanent
 |=|b_isempty :=: Clear
 |=|used_userbar :=: Allow for user used userbar
+|=|screenshots_path :=: Screenshots path
+|=|wallpapers_path :=: Wallpapers path
