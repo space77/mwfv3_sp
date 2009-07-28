@@ -6,7 +6,7 @@ $pathway_info[] = array('title'=>$lang['site_config'],'link'=>'');
 $items = $DB->select("SELECT * FROM site_settings ORDER BY `type`,`key`");
 
 if($_GET['action']){
-    chmod('core/cache/',0777);
+    chmod('./core/cache/',0777);
     $cache_str = "<?php\n";
     foreach($items as $item){
     $DB->query("UPDATE site_settings SET `value`=? WHERE `key`=? LIMIT 1",$_POST[$item['key']],$item['key']);
@@ -17,7 +17,7 @@ if($_GET['action']){
         $cache_str .= '$config[\''.$item['key'].'\'] = '.$typedvalue.';'."\n";
     }
     $cache_str .= "?>";
-    file_put_contents('core/cache/config_cache.php',$cache_str);
+    file_put_contents('./core/cache/config_cache.php',$cache_str);
     redirect('index.php?n=admin&sub=config',1);
 }
 ?>

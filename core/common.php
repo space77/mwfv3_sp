@@ -462,30 +462,15 @@ function AT_GetPoints($TeamType, $TeamRating, $MemberRating, $TeamGames, $Member
 		
 	return floor ($points);   
 }
-/*
-uint32 ArenaTeam::GetPoints(uint32 MemberRating)
-{
-    // returns how many points would be awarded with this team type with this rating
-    float points;
 
-    uint32 rating = MemberRating + 150 < stats.rating ? MemberRating : stats.rating;
-
-    if(rating<=1500)
-    {
-        points = (float)rating * 0.22f + 14.0f;
-    }
-    else
-    {
-        points = 1511.26f / (1.0f + 1639.28f * exp(-0.00412f * (float)rating));
-    }
-
-    // type penalties for <5v5 teams
-    if(Type == ARENA_TEAM_2v2)
-        points *= 0.76f;
-    else if(Type == ARENA_TEAM_3v3)
-        points *= 0.88f;
-
-    return (uint32) points;
+function AddMangosFields ($ver) {
+		if ($ver !==''){
+			 require_once ('core/cache/'.$ver.'_UpdateFields.php');
+			 if ($ver==313){
+          require_once ('core/313_mangos_fn.php');
+       } else {
+          require_once ('core/def_mangos_fn.php');
+       }
+		}
 }
-*/
 ?>
