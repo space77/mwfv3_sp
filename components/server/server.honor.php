@@ -1,7 +1,7 @@
 <?php
 if(INCLUDED!==true)exit;
 require_once 'core/defines.php';
-
+require_once 'core/common.php';
 // ==================== //
 $pathway_info[] = array('title'=>$lang['honor'],'link'=>'index.php?n=server&sub=honor');
 // ==================== //
@@ -17,26 +17,23 @@ if(!$_GET['realm']){
     }
 }
 
-if($_GET['realm']){
-    $pos = 0;
-    $realm_list = realm_list();
-    $realm = $DB->selectRow("SELECT * FROM realmlist WHERE id=?d LIMIT 1",$_GET['realm']);    
-    $pathway_info[] = array('title'=>$realm['name'],'');
+if($_GET['realm']){    
+    $realm_info = get_realm_byid($_GET['realm']);
+    $pathway_info[] = array('title'=>$realm_info['name'],'');
     
-		if ($realm_info['Version']!==''){
-			require_once 'core/cache/'.$realm_info['Version'].'/UpdateFields.php';		
-		} else {
-			require_once 'core/cache/UpdateFields.php';	
-		}
+    
 		
-		if(!$realm['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm['id']);
-    $wsdb_info = parse_worlddb_info($realm['CharacterDatabaseInfo']);
+		if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
+    echo('hi'); exit;
+    $wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
+    
+    /*
     $WSDB = DbSimple_Generic::connect("".$config['db_type']."://".$wsdb_info['user'].":".$wsdb_info['password']."@".$wsdb_info['host'].":".$wsdb_info['port']."/".$wsdb_info['db']."");
     if($WSDB)$WSDB->setErrorHandler('databaseErrorHandler');
     if($WSDB)$WSDB->query("SET NAMES ".$config['db_encoding']);
     
-   //if($WSDB)$honor = $WSDB->select("SELECT guid, CAST( SUBSTRING_INDEX(SUBSTRING_INDEX(`data`, ' ', 1421), ' ', -1) AS UNSIGNED) AS honor FROM `character`;");
-   	
+    AddMangosFields ($realm_info['Version']);
+       	
    	$qstr ="SELECT `guid`
 					, CAST( SUBSTRING_INDEX(SUBSTRING_INDEX(`data`, ' ', ".$mangos_field['PLAYER_FIELD_LIFETIME_HONORBALE_KILLS']."+1), ' ', -1) AS UNSIGNED) AS `honor` 
 					, `gmlevel` 
@@ -117,4 +114,5 @@ function calc_character_rank($honor_points){
 function zehohonorfilter($var){
     return ($var>0);
 }
+*/
 ?>
