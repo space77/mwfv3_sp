@@ -21,98 +21,57 @@ if($_GET['realm']){
     $realm_info = get_realm_byid($_GET['realm']);
     $pathway_info[] = array('title'=>$realm_info['name'],'');
     
+    if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
+    $CHDB_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
     
-		
-		if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
-    echo('hi'); exit;
-    $wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
-    
-    /*
-    $WSDB = DbSimple_Generic::connect("".$config['db_type']."://".$wsdb_info['user'].":".$wsdb_info['password']."@".$wsdb_info['host'].":".$wsdb_info['port']."/".$wsdb_info['db']."");
-    if($WSDB)$WSDB->setErrorHandler('databaseErrorHandler');
-    if($WSDB)$WSDB->query("SET NAMES ".$config['db_encoding']);
+    $CHDB = DbSimple_Generic::connect("".$config['db_type']."://".$CHDB_info['user'].":".$CHDB_info['password']."@".$CHDB_info['host'].":".$CHDB_info['port']."/".$CHDB_info['db']."");
+    if($CHDB)$CHDB->setErrorHandler('databaseErrorHandler');
+    if($CHDB)$CHDB->query("SET NAMES ".$config['db_encoding']);
     
     AddMangosFields ($realm_info['Version']);
-       	
-   	$qstr ="SELECT `guid`
-					, CAST( SUBSTRING_INDEX(SUBSTRING_INDEX(`data`, ' ', ".$mangos_field['PLAYER_FIELD_LIFETIME_HONORBALE_KILLS']."+1), ' ', -1) AS UNSIGNED) AS `honor` 
-					, `gmlevel` 
-					FROM `characters`, `".$config['db_name']."`.`account`
-					WHERE ((`characters`.`account`=`".$config['db_name']."`.`account`.`id` ) AND (`gmlevel`=0));";
-
-   	if($WSDB)$honor = $WSDB->select($qstr);
-    foreach($honor as $res_row)
-    {
-        if($res_row['type']==0){
-            $honor_arr[$res_row['guid']] += $res_row['honor'];
-        }elseif($res_row['type']==2){
-            $honor_arr[$res_row['guid']] -= $res_row['honor'];
-        }
-    }
-    unset($honor);
-    if(!is_array($honor_arr))$honor_arr = array();
-    $honor_arr = array_filter($honor_arr,"zehohonorfilter");
-    arsort($honor_arr);
-    $honor_arr = array_slice($honor_arr,0,$max_display_chars,true);
+      	
+   	$qstr= "SELECT guid FROM
+              (SELECT c.guid
+   	                  , CAST( SUBSTRING_INDEX(SUBSTRING_INDEX(c.`data`, ' ', ".($mangos_field['PLAYER_FIELD_HONOR_CURRENCY']+1)."), ' ', -1) AS UNSIGNED) AS honor
+					     FROM `characters` AS c, `".$config['db_name']."`.`account` as a
+					     WHERE ((c.`account`= a.`id`) AND (a.`gmlevel`=0) AND (c.`race` IN (?a)))) AS tbl
+            WHERE honor > 0 ORDER BY honor DESC LIMIT ".$max_display_chars.";";
+    
     $allhonor['alliance'] = array();
     $allhonor['horde'] = array();
-    $charinfo_arr = array();
-    $precharinfo_arr = array();
-    if(count($honor_arr)>0)$precharinfo_arr = $WSDB->select("SELECT characters.guid AS ARRAY_KEY,characters.guid,characters.data,characters.name,characters.race,characters.class FROM `characters` WHERE guid IN(?a)",array_keys($honor_arr));
-    foreach ($honor_arr as $honor_uid=>$honor_val){
-        $charinfo_arr[$honor_uid] = $precharinfo_arr[$honor_uid];
-    }
-    unset($precharinfo_arr);
-    // Prepair data ...
-    foreach($charinfo_arr as $charinfo_item){
-        $char_data = explode(' ',$charinfo_item['data']);
+    for ($i = 1; $i <= 2; $i++)
+    {
+      if ($i==1) {
+        $faction='alliance';
+        if ($CHDB)$guids=$CHDB->select($qstr, $site_defines['characrer_race_alliance']);
+      } else {
+        $faction='horde';
+        if ($CHDB)$guids=$CHDB->select($qstr, $site_defines['characrer_race_horde']);
+      }
+      if (count($guids) > 0)$chars=$CHDB->select("SELECT * FROM `characters` WHERE `guid` IN (?a)", array_map("getguid", $guids));
 
-
-        $char_rank_id = calc_character_rank($honor_arr[$charinfo_item['guid']]);
-        if($charinfo_item['race']==1 || $charinfo_item['race']==3 || $charinfo_item['race']==4 || $charinfo_item['race']==7 || $charinfo_item['race']==11)$faction = 'alliance';
-				else $faction = 'horde';
+      foreach($chars as $char){
+        $my_char = new character($char, $mangos_field);
         $character = array(
-            'name'   => $charinfo_item['name'],
-            'race'   => $site_defines['character_race'][$charinfo_item['race']],
-            'class'  => $site_defines['character_class'][$charinfo_item['class']],
-            'gender' => $site_defines['character_gender'][((int)($char_data[$mangos_field['UNIT_FIELD_BYTES_0']]) >> 16) & hexdec('FF')],
-            'rank'   => $site_defines['character_rank'][$faction][$char_rank_id],
-            'level'  => $char_data[$mangos_field['UNIT_FIELD_LEVEL']],
-            'honor_points'       => $honor_arr[$charinfo_item['guid']],
-           	'honorable_kills'    => $char_data[$mangos_field['PLAYER_FIELD_LIFETIME_HONORBALE_KILLS']],
-            'dishonorable_kills' => $char_data[$mangos_field['PLAYER_FIELD_KILLS']],
-            'race_icon'   => $config['template_href'].'images/icon/race/'.$charinfo_item['race'].'-'.$char_gender.'.gif',
-            'class_icon'   => $config['template_href'].'images/icon/class/'.$charinfo_item['class'].'.gif',
-            'rank_icon'   => $config['template_href'].'images/icon/pvpranks/rank'.$char_rank_id.'.gif',
+            'name'   => $my_char->name,
+            'race'   => $site_defines['character_race'][$my_char->race],
+            'class'  => $site_defines['character_class'][$my_char->class],
+            'gender' => $site_defines['character_gender'][$my_char->gender],
+            'level'  => $my_char->level,
+            'honor_points'       => $my_char->honor_points,
+           	'honorable_kills'    => $my_char->honorable_kills,
+            'race_icon'   =>  $config['template_href'].'images/icon/race/'.$my_char->race.'-'.$my_char->gender.'.gif',
+            'class_icon'   => $config['template_href'].'images/icon/class/'.$my_char->class.'.gif',
         );
         $allhonor[$faction][] = $character;
-    }    
-    
-    unset($honor_arr);
-    unset($charinfo_arr);
-    unset($WSDB);
-    
-}
-function get_rank_numending($n)
-{
-  $n = substr("$n", -1);
-  if($n==1)return 'st';
-  elseif($n==2)return 'nd';
-  elseif($n==3)return 'rd';
-  elseif($n>=4)return 'th';
-}
-function calc_character_rank($honor_points){
-    $rank = 0;
-    if($honor_points <= 0){
-        $rank = 0; 
-    }else{
-        if($honor_points < 2000) $rank = 1;
-        else $rank = ceil($honor_points / 5000) + 1;
+        unset ($my_char);
+      }
+      unset($guids);
     }
-    return $rank;
+    unset ($CHDB);
 }
-function zehohonorfilter($var){
-    return ($var>0);
+
+function getguid($val){
+  return $val['guid'];
 }
-*/
 ?>

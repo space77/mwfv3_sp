@@ -169,7 +169,7 @@ a.nav:active{
                     <td width="20">Class</td>
                     <td>Name</td>
                     <td align="center">Lvl</td>
-                    <td align="center"><!--Honor/-->Kills</td>
+                    <td align="center">Honor / Kills</td>
                 </tr>
 <?php foreach($allhonor['alliance'] as $item){ $pos++; ?>
                 <tr>
@@ -179,7 +179,7 @@ a.nav:active{
                     <td width="20" align="center"><img src="<?php echo $item['class_icon']; ?>" onmouseover="ddrivetip('<?php echo $item['class']; ?>','#ffffff')"; onmouseout="hideddrivetip()"></td>
                     <td style="font-size:14px;"><b><?php echo $item['name']; ?></b></td>
                     <td width="20" align="center" style="font-size:12px;"><b><?php echo $item['level']; ?></b></td>
-                    <td align="center" style="font-size:12px;"><font color="green"><?php echo $item['honorable_kills']; ?></font> <!--/ <font color="red"><?php //echo $item['dishonorable_kills']; ?></font>--></td>
+                    <td align="center" style="font-size:12px;"><font color="red"><?php echo $item['honor_points']; ?></font> / <font color="green"><?php echo $item['honorable_kills']; ?></font></td>
                 </tr>
 <?php } $pos = 0; ?>
                 </table>
@@ -196,7 +196,7 @@ a.nav:active{
                     <td width="20">Class</td>
                     <td>Name</td>
                     <td align="center">Lvl</td>
-                    <td align="center"><!--Honor/-->Kills</td>
+                    <td align="center">Honor / Kills</td>
                 </tr>
 <?php foreach($allhonor['horde'] as $item){ $pos++; ?>
                 <tr>
@@ -206,7 +206,7 @@ a.nav:active{
                     <td width="20" align="center"><img src="<?php echo $item['class_icon']; ?>" onmouseover="ddrivetip('<?php echo $item['class']; ?>','#ffffff')"; onmouseout="hideddrivetip()"></td>
                     <td style="font-size:14px;"><b><?php echo $item['name']; ?></b></td>
                     <td width="20" align="center" style="font-size:12px;"><b><?php echo $item['level']; ?></b></td>
-                    <td align="center" style="font-size:12px;"><font color="green"><?php echo $item['honorable_kills']; ?></font> <!--/ <font color="red"><?php //echo $item['dishonorable_kills']; ?></font>--></td>
+                    <td align="center" style="font-size:12px;"><font color="red"><?php echo $item['honor_points']; ?></font> / <font color="green"><?php echo $item['honorable_kills']; ?></font></td>
                 </tr>
 <?php } unset($item,$pos); ?>
                 </table>

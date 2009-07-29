@@ -20,6 +20,9 @@
     var $position_y;
     
     var $at_login;
+    
+    var $honor_points;
+    var $honorable_kills;
         
     // конструктор
     function character($sqlinfo, $mangos_field) {
@@ -47,6 +50,9 @@
         $this->position_y = $sqlinfo['position_y'];
         
         $this->at_login = $sqlinfo['at_login'];
+        
+        $this->honor_points = $data[$mangos_field['PLAYER_FIELD_HONOR_CURRENCY']];
+        $this->honorable_kills = $data[$mangos_field['PLAYER_FIELD_LIFETIME_HONORBALE_KILLS']];
         
         return true;
     }

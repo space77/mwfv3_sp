@@ -166,6 +166,8 @@ $realm_timezone_def = array(
 );
 
 $site_defines = Array(
+  'characrer_race_alliance'=>Array(1,3,4,7,11),
+  'characrer_race_horde'=>Array(2,5,6,8,9,10),
   'character_race' => Array(
     1 => $lang['Human'],
     2 => $lang['Orc'],
