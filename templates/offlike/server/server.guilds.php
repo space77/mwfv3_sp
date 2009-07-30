@@ -88,15 +88,18 @@
           <td class='rankingHeader' align='center' nowrap='nowrap'><?=$lang['location'];?>&nbsp;</td>
 		  <td class='rankingHeader' align='center' nowrap='nowrap'><?=$lang['online'];?>&nbsp;</td>
         </tr>
-        <?php foreach($res_info as $res){ ?>
+        <?php foreach($res_info as $res){
+          $cc1++;
+          if($color==1)$color=2; else $color=1;
+        ?>
         <tr>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$res['number']; ?></b></td>
-          <td class="serverStatus<?=$res['res_color'] ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?=$res['name']; ?></b></td>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center'><small style='color: rgb(102, 13, 2);'><img onmouseover="ddrivetip('<?=$site_defines['character_race'][$res['race']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?=$res['race'];?>-<?=$res['gender'];?>.gif' height='18' width='18'></small></td>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center'><small style='color: (35, 67, 3);'><img onmouseover="ddrivetip('<?=$site_defines['character_class'][$res['class']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/class/<?=$res['class'];?>.gif' height='18' width='18'></small></td>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$res['level']; ?></b></td>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?=$res['pos'];?></b></td>
-          <td class="serverStatus<?=$res['res_color'] ?>" align="center"><img src="images/<?=$res['online'];?>" height='18' width='18'></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$cc1 ?></b></td>
+          <td class="serverStatus<?=$color ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?=$res['name']; ?></b></td>
+          <td class="serverStatus<?=$color ?>" align='center'><small style='color: rgb(102, 13, 2);'><img onmouseover="ddrivetip('<?=$site_defines['character_race'][$res['race']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?=$res['race'];?>-<?=$res['gender'];?>.gif' height='18' width='18'></small></td>
+          <td class="serverStatus<?=$color ?>" align='center'><small style='color: (35, 67, 3);'><img onmouseover="ddrivetip('<?=$site_defines['character_class'][$res['class']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/class/<?=$res['class'];?>.gif' height='18' width='18'></small></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$res['level']; ?></b></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(35, 67, 3);'><?=$res['pos'];?></b></td>
+          <td class="serverStatus<?=$color ?>" align="center"><img src="images/<?=$res['online'];?>" height='18' width='18'></td>
         </tr>
         <?php } }else {?>
         <tr>
@@ -111,14 +114,17 @@
           <!--<td class='rankingHeader' align='center' nowrap='nowrap'>Онлайн&nbsp;</td>-->
 		  <td class='rankingHeader' align='center' nowrap='nowrap'><?=$lang['cdate'];?>&nbsp;</td>
         </tr>
-        <?php foreach($res_info as $res){ ?>
+        <?php foreach($res_info as $res){
+          $cc++;
+          if($color==1)$color=2; else $color=1;
+        ?>
         <tr>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$res['number']; ?></b></td>
-		  <td class="serverStatus<?=$res['res_color'] ?>" nowrap='nowrap'><b class="smallBold"><a href="index.php?n=server&sub=guilds&realm=<?=$_GET['realm'];?>&guildid=<?=$res['guildid'];?>" style="color:rgb(35,67,3)"><?=$res["name"]; ?></a></b></td>
-          <td class="serverStatus<?=$res['res_color'] ?>"><small style="color:rgb(35,67,3)"><?=$res['info']; ?></small></td>
-		  <td class="serverStatus<?=$res['res_color'] ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['leader']; ?></small></td>
-		  <td class="serverStatus<?=$res['res_color'] ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['players']; ?></small></td>
-          <td class="serverStatus<?=$res['res_color'] ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['createdate']; ?></small></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$cc; ?></b></td>
+		      <td class="serverStatus<?=$color ?>" nowrap='nowrap'><b class="smallBold"><a href="index.php?n=server&sub=guilds&realm=<?=$_GET['realm'];?>&guildid=<?=$res['guildid'];?>" style="color:rgb(35,67,3)"><?=$res["name"]; ?></a></b></td>
+          <td class="serverStatus<?=$color ?>"><small style="color:rgb(35,67,3)"><?=$res['info']; ?></small></td>
+		      <td class="serverStatus<?=$color ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['leader']; ?></small></td>
+		      <td class="serverStatus<?=$color ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['players']; ?></small></td>
+          <td class="serverStatus<?=$color ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['createdate']; ?></small></td>
         </tr>
         <?php } } ?>
 		

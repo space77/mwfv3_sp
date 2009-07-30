@@ -1,6 +1,7 @@
 <?php
 if(INCLUDED!==true)exit;
 require_once 'core/defines.php';
+require_once 'core/common.php';
 // ==================== //
 $pathway_info[] = array('title'=>$lang['guilds'],'link'=>'index.php?n=server&sub=guilds');
 // ==================== //
@@ -14,103 +15,76 @@ if(!$_GET['realm']){
     }
 }
 
-if($_GET['realm']){
-  $res_info = array();
-  $query = array();
-  $realm_info = get_realm_byid($_GET['realm']);
-  $pathway_info[] = array('title'=>$realm_info['name'],'link'=>'index.php?n=server&sub=guilds&realm='.$_GET['realm']);
-  $cc = 0;
-  
-	if ($realm_info['Version']!==''){
-			require_once 'core/cache/'.$realm_info['Version'].'/UpdateFields.php';		
-		} else {
-			require_once 'core/cache/UpdateFields.php';	
-		}
-		  
-		if(check_port_status($realm_info['address'], $realm_info['port'])!==true) {
-        output_message('alert','Realm <b>'.$realm_info['name'].'</b> is offline <img src="images/downarrow2.gif" border="0" align="top">');
-    }
-        
-				if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
-        $wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
-        $WSDB = DbSimple_Generic::connect("".$config['db_type']."://".$wsdb_info['user'].":".$wsdb_info['password']."@".$wsdb_info['host'].":".$wsdb_info['port']."/".$wsdb_info['db']."");
-        if($WSDB)$WSDB->setErrorHandler('databaseErrorHandler');
-        if($WSDB)$WSDB->query("SET NAMES ".$config['db_encoding']);
-        if($WSDB)$query = $WSDB->select("SELECT * FROM `guild`");
+if($_GET['realm'] AND !$_GET['guildid']){
+    $realm_info = get_realm_byid($_GET['realm']);
+    $pathway_info[] = array('title'=>$realm_info['name'],'');
+    
+    if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
+    $CHDB_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
+    
+    $CHDB = DbSimple_Generic::connect("".$config['db_type']."://".$CHDB_info['user'].":".$CHDB_info['password']."@".$CHDB_info['host'].":".$CHDB_info['port']."/".$CHDB_info['db']."");
+    if($CHDB)$CHDB->setErrorHandler('databaseErrorHandler');
+    if($CHDB)$CHDB->query("SET NAMES ".$config['db_encoding']);
+    
+    if($CHDB)$query = $CHDB->select("SELECT * FROM `guild`");  
         
     foreach ($query as $result) {
-        if($res_color==1)$res_color=2;else$res_color=1;
-        $cc++;     
+      if($res_color==1)$res_color=2;else$res_color=1;
+      $cc++;     
 		
-		if($WSDB)$g_players = $WSDB->selectCell("SELECT count(*) FROM `guild_member` WHERE `guildid`=?d", $result['guildid']); 
-		if($WSDB)$g_leader = $WSDB->select("SELECT `name` FROM `characters` WHERE `guid`=?d", $result['leaderguid']); 
+		  if($CHDB)$g_players = $CHDB->selectCell("SELECT count(*) FROM `guild_member` WHERE `guildid`=?d", $result['guildid']); 
+		  if($CHDB)$g_leader = $CHDB->select("SELECT `name` FROM `characters` WHERE `guid`=?d", $result['leaderguid']); 
 		
-        $res_info[$cc]["number"] = $cc;
-        $res_info[$cc]["res_color"] = $res_color;
-		$res_info[$cc]["guildid"] = $result['guildid'];
-        $res_info[$cc]["name"] = $result['name'];
-		$res_info[$cc]["info"] = $result['info'];
-        $res_info[$cc]["leader"] = $g_leader[0]['name'];
-        $res_info[$cc]["players"] = $g_players;
-        $res_info[$cc]["online"] = $result['online'];
-		$res_info[$cc]["createdate"] = $result['createdate'];
+      $res_info[$cc]["number"] = $cc;
+      $res_info[$cc]["res_color"] = $res_color;
+		  $res_info[$cc]["guildid"] = $result['guildid'];
+      $res_info[$cc]["name"] = $result['name'];
+		  $res_info[$cc]["info"] = $result['info'];
+      $res_info[$cc]["leader"] = $g_leader[0]['name'];
+      $res_info[$cc]["players"] = $g_players;
+      $res_info[$cc]["online"] = $result['online'];
+		  $res_info[$cc]["createdate"] = $result['createdate'];
     }
-    unset($WSDB);
+    unset($CHDB, $query);
 }
 
-if($_GET['guildid']){
-	$res_info = array();
-	$query = array();
+if($_GET['realm'] AND $_GET['guildid']){
 	$realm_info = get_realm_byid($_GET['realm']);
-	$cc = 0;
+  $pathway_info[] = array('title'=>$realm_info['name'],'link'=>'index.php?n=server&sub=guilds&realm='.$_GET['realm']);
 	
-	if ($realm_info['Version']!==''){
-			require_once 'core/cache/'.$realm_info['Version'].'/UpdateFields.php';		
-		} else {
-			require_once 'core/cache/UpdateFields.php';	
-		}
-		
-    if(check_port_status($realm_info['address'], $realm_info['port'])!==true) {
-        output_message('alert','Realm <b>'.$realm_info['name'].'</b> is offline <img src="images/downarrow2.gif" border="0" align="top">');
-    }
+  if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
+  $CHDB_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
     
-        if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
-        $wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
-        $WSDB = DbSimple_Generic::connect("".$config['db_type']."://".$wsdb_info['user'].":".$wsdb_info['password']."@".$wsdb_info['host'].":".$wsdb_info['port']."/".$wsdb_info['db']."");
-        if($WSDB)$WSDB->setErrorHandler('databaseErrorHandler');
-        if($WSDB)$WSDB->query("SET NAMES ".$config['db_encoding']);
+  $CHDB = DbSimple_Generic::connect("".$config['db_type']."://".$CHDB_info['user'].":".$CHDB_info['password']."@".$CHDB_info['host'].":".$CHDB_info['port']."/".$CHDB_info['db']."");
+  if($CHDB)$CHDB->setErrorHandler('databaseErrorHandler');
+  if($CHDB)$CHDB->query("SET NAMES ".$config['db_encoding']);
         
-				$g_name = $WSDB->selectCell("SELECT `name` FROM `guild` WHERE `guildid`=?d", $_GET['guildid']);
-				$pathway_info[] = array('title'=>$g_name,'');
-				if($WSDB)$query = $WSDB->select("SELECT * FROM `guild_member` WHERE `guildid`=?d", $_GET['guildid']);
+	$g_name = $CHDB->selectCell("SELECT `name` FROM `guild` WHERE `guildid`=?d", $_GET['guildid']);
+	$pathway_info[] = array('title'=>$g_name,'');
+	if($CHDB)$guids = $CHDB->select("SELECT guid FROM `guild_member` WHERE `guildid`=?d", $_GET['guildid']);
 
-
-
-
-	foreach ($query as $result) 
+	AddMangosFields ($realm_info['Version']);
+		
+	if($CHDB)$g_player = $CHDB->select("SELECT * FROM `characters` WHERE `guid` IN (?a)", array_map("getguid", $guids));
+	foreach ($g_player as $player) 
 	{
-		if($res_color==1)$res_color=2;else$res_color=1;
-		if($WSDB)$g_player = $WSDB->select("SELECT * FROM `characters` WHERE `guid`=?d", $result['guid']);
-		foreach ($g_player as $player) 
-		{
+	    
+			$my_char = new character($player, $mangos_field);
 			$cc++;
-			$online = ($player['online']==0) ? "downarrow2.gif" : "uparrow2.gif"; 
-			$res_race = $site_defines['character_race'][$player['race']];
-			$res_class = $site_defines['character_class'][$player['class']];
-			$res_pos=get_zone_name($player['map'], $player['position_x'], $player['position_y']);
-			$char_data = explode(' ',$player['data']);
-
-			$res_info[$cc]["res_color"] = $res_color;
-			$res_info[$cc]["number"] = $cc;
-			$res_info[$cc]["name"] = $player['name'];
-			$res_info[$cc]["race"] = $player['race'];
-			$res_info[$cc]["class"] = $player['class'];
-			$res_info[$cc]["gender"] = ((int)($char_data[$mangos_field['UNIT_FIELD_BYTES_0']]) >> 16) & hexdec('FF');
-			$res_info[$cc]["level"] = $char_data[$mangos_field['UNIT_FIELD_LEVEL']];
-			$res_info[$cc]["pos"] = $res_pos;
-			$res_info[$cc]["online"] = $online;
-		}
+			//$res_info[$cc]["res_color"] = $res_color;
+			$res_info[$cc]["name"] = $my_char->name;
+			$res_info[$cc]["race"] = $my_char->race;
+			$res_info[$cc]["class"] = $my_char->class;
+			$res_info[$cc]["gender"] = $my_char->gender;
+			$res_info[$cc]["level"] = $my_char->level;
+			$res_info[$cc]["pos"] = get_zone_name($my_char->map, $my_char->position_x, $my_char->position_y);
+			$res_info[$cc]["online"] = (($my_char->online==0) ? "downarrow2.gif" : "uparrow2.gif"); 
+			unset($my_char);
 	}
-    unset($WSDB);
+  unset($CHDB, $guids, $g_player);
+}
+
+function getguid($val){
+  return $val['guid'];
 }
 ?>
