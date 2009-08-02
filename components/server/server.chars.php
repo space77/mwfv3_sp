@@ -1,13 +1,12 @@
 <?php
 if(INCLUDED!==true)exit;
 require_once 'core/defines.php';
+require_once 'core/common.php';
 // ==================== //
-
 $pathway_info[] = array('title'=>$lang['chars'],'link'=>'./index.php?n=server&sub=chars');
-
-	//===== Calc pages1 =====//
-	$items_per_pages = $config['users_per_page'];
- 	$limit_start = ($p-1)*$items_per_pages;
+//===== Calc pages1 =====//
+$items_per_pages = $config['users_per_page'];
+$limit_start = ($p-1)*$items_per_pages;
 
 if(!$_GET['realm']){
     $realm_list = realm_list();
@@ -19,28 +18,17 @@ if(!$_GET['realm']){
 }
 
 if($_GET['realm']){
-  $res_info = array();
-  $query = array();
   $realm_info = get_realm_byid($_GET['realm']);
-  $cc = 0;
-	  if ($realm_info['Version']!==''){
-			require_once 'core/cache/'.$realm_info['Version'].'/UpdateFields.php';		
-		} else {
-			require_once 'core/cache/UpdateFields.php';	
-		}
+  $pathway_info[] = array('title'=>$realm_info['name'],'');
+  
+  if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
+  $CHDB_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
+    
+  $CHDB = DbSimple_Generic::connect("".$config['db_type']."://".$CHDB_info['user'].":".$CHDB_info['password']."@".$CHDB_info['host'].":".$CHDB_info['port']."/".$CHDB_info['db']."");
+  if($CHDB)$CHDB->setErrorHandler('databaseErrorHandler');
+  if($CHDB)$CHDB->query("SET NAMES ".$config['db_encoding']);
+  
 	  
-	  $pathway_info[] = array('title'=>$realm_info['name'],'link'=>'');
-	  
-		if(check_port_status($realm_info['address'], $realm_info['port'])!==true)
-    {
-        output_message('alert','Realm <b>'.$realm_info['name'].'</b> is offline <img src="./images/downarrow2.gif" border="0" align="top">');
-    }
-	
-		if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
-    $wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
-    $WSDB = DbSimple_Generic::connect("".$config['db_type']."://".$wsdb_info['user'].":".$wsdb_info['password']."@".$wsdb_info['host'].":".$wsdb_info['port']."/".$wsdb_info['db']."");
-    if($WSDB)$WSDB->setErrorHandler('databaseErrorHandler');
-    if($WSDB)$WSDB->query("SET NAMES ".$config['db_encoding']);
     if($WSDB)$query = $WSDB->select("SELECT name, race, class, data, position_x, position_y, position_z, map FROM `characters` ORDER BY `name` LIMIT $limit_start,$items_per_pages");
 	
     foreach ($query as $result) {
@@ -65,7 +53,8 @@ if($_GET['realm']){
         $res_info[$cc]["next_level_xp"]= $char_data[$mangos_field['PLAYER_NEXT_LEVEL_XP']];
         $res_info[$cc]["xp_perc"] = ceil($res_info[$cc]["current_xp"]/$res_info[$cc]["next_level_xp"] * 100);
     }
-    
+
+/*    
 // array´s
  $query1 = array();  
  $query2 = array();  
@@ -148,6 +137,7 @@ $query2 =  $WSDB2->select("SELECT * FROM `characters`  $filter  ORDER BY `name` 
 
 	unset($WSDB1); 
 	unset($WSDB2);
+	*/
 }
 ?>
 

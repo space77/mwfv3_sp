@@ -87,23 +87,26 @@
           <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['level_short'];?>&nbsp;</td>
           <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['location'];?>&nbsp;</td>
         </tr>
-        <?php ##foreach($res_info as $res){ ?>   <?php foreach($item_res as $item){ ?>
+        <?php foreach($item_res as $item){
+          $cc1++;
+          if($color==1) $color=2; else $color=1; 
+        ?>
         <tr>
-          <td class="serverStatus<?php echo $item['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?php echo $item['number']; ?></b></td>
-          <td class="serverStatus<?php echo $item['res_color'] ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?php echo $item['name']; ?></b></td>
-          <td class="serverStatus<?php echo $item['res_color'] ?>" align='center'><small style='color: rgb(102, 13, 2);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_race'][$item['race']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?php echo $item['race'];?>-<?php echo $item['gender'];?>.gif' height='18' width='18'></small></td>
-          <td class="serverStatus<?php echo $item['res_color'] ?>" align='center'><small style='color: (35, 67, 3);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_class'][$item['class']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/class/<?php echo $item['class'];?>.gif' height='18' width='18'></small></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$cc1; ?></b></td>
+          <td class="serverStatus<?=$color ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?php echo $item['name']; ?></b></td>
+          <td class="serverStatus<?=$color ?>" align='center'><small style='color: rgb(102, 13, 2);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_race'][$item['race']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?php echo $item['race'];?>-<?php echo $item['gender'];?>.gif' height='18' width='18'></small></td>
+          <td class="serverStatus<?=$color ?>" align='center'><small style='color: (35, 67, 3);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_class'][$item['class']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/class/<?php echo $item['class'];?>.gif' height='18' width='18'></small></td>
 
-          <td  width="40" class="serverStatus<?php echo $item['res_color'] ?>"><b style='color: rgb(102, 13, 2);'>
+          <td  width="40" class="serverStatus<?=$color?>"><b style='color: rgb(102, 13, 2);'>
             <div style="border:1px solid #b26d2e;position:relative;width:100px;padding:1px" onmouseover="ddrivetip('<?php echo $item['current_xp'];?> <?php echo $lang['of'];?> <?php echo $item['next_level_xp'];?>','#ffffff')" onmouseout="hideddrivetip()">
             <div style="width:<?=$item['xp_perc']?>px;background:#b26d2e;height:14px" align="left"></div>
               <small style="color:#660c03;position:absolute;top:2px;left:45%"><?=$item['level'];?></small>
             </div>
 	  </b></td>
 
-          <td class="serverStatus<?php echo $item['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?php echo $item['pos'];?></b></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(35, 67, 3);'><?php echo $item['pos'];?></b></td>
         </tr>
-        <?php ##} ?><?php }  ?>
+        <?php }  ?>
         </tbody>
       </table>
     </td>
