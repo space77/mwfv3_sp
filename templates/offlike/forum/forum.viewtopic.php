@@ -98,7 +98,7 @@
                                                 <div class="shell">
                                                     <table cellspacing="0" cellpadding="0" border="0">
                                                         <tr>
-                                                            <td style="background: url('<?php echo $config['avatar_path'].$post['avatar']; ?>'); width: 64px; height: 64px;">
+                                                            <td style="background: url('<?php echo $post['avatar']; ?>'); width: 64px; height: 64px;">
                                                             </td>
                                                         </tr>
                                                     </table>

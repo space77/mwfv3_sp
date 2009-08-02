@@ -115,11 +115,11 @@
 		  <td class='rankingHeader' align='center' nowrap='nowrap'><?=$lang['cdate'];?>&nbsp;</td>
         </tr>
         <?php foreach($res_info as $res){
-          $cc++;
+          $cc1++;
           if($color==1)$color=2; else $color=1;
         ?>
         <tr>
-          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$cc; ?></b></td>
+          <td class="serverStatus<?=$color ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$cc1; ?></b></td>
 		      <td class="serverStatus<?=$color ?>" nowrap='nowrap'><b class="smallBold"><a href="index.php?n=server&sub=guilds&realm=<?=$_GET['realm'];?>&guildid=<?=$res['guildid'];?>" style="color:rgb(35,67,3)"><?=$res["name"]; ?></a></b></td>
           <td class="serverStatus<?=$color ?>"><small style="color:rgb(35,67,3)"><?=$res['info']; ?></small></td>
 		      <td class="serverStatus<?=$color ?>" align='center' nowrap='nowrap'><small style="color:rgb(35,67,3)"><?=$res['leader']; ?></small></td>

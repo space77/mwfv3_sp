@@ -29,14 +29,9 @@ if($_GET['realm'] AND !$_GET['guildid']){
     if($CHDB)$query = $CHDB->select("SELECT * FROM `guild`");  
         
     foreach ($query as $result) {
-      if($res_color==1)$res_color=2;else$res_color=1;
-      $cc++;     
-		
 		  if($CHDB)$g_players = $CHDB->selectCell("SELECT count(*) FROM `guild_member` WHERE `guildid`=?d", $result['guildid']); 
 		  if($CHDB)$g_leader = $CHDB->select("SELECT `name` FROM `characters` WHERE `guid`=?d", $result['leaderguid']); 
-		
-      $res_info[$cc]["number"] = $cc;
-      $res_info[$cc]["res_color"] = $res_color;
+		  $cc++;
 		  $res_info[$cc]["guildid"] = $result['guildid'];
       $res_info[$cc]["name"] = $result['name'];
 		  $res_info[$cc]["info"] = $result['info'];
@@ -68,10 +63,8 @@ if($_GET['realm'] AND $_GET['guildid']){
 	if($CHDB)$g_player = $CHDB->select("SELECT * FROM `characters` WHERE `guid` IN (?a)", array_map("getguid", $guids));
 	foreach ($g_player as $player) 
 	{
-	    
 			$my_char = new character($player, $mangos_field);
 			$cc++;
-			//$res_info[$cc]["res_color"] = $res_color;
 			$res_info[$cc]["name"] = $my_char->name;
 			$res_info[$cc]["race"] = $my_char->race;
 			$res_info[$cc]["class"] = $my_char->class;

@@ -116,10 +116,11 @@ foreach($result as $cur_post)
   else $cur_post['posted'] = date('d-m-Y, H:i:s',$cur_post['posted']);
   
   if ($cur_post['avatar']=='') {
-    $cur_post['avatar'] = 'NoAvator.gif';
+    $cur_post['avatar'] = './images/NoAvator.gif';
   } else {
-    if(!file_exists($config['avatar_path'].$cur_post['avatar'])){
-      $cur_post['avatar'] = 'NoAvator.gif';
+    $cur_post['avatar'] = $config['avatar_path'].$cur_post['avatar'];
+    if(!file_exists($cur_post['avatar'])){
+      $cur_post['avatar'] = './images/NoAvator.gif';
     }
   }
   $posts[] = $cur_post;
