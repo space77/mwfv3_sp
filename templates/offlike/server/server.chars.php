@@ -75,19 +75,20 @@
     <td>
       <table cellpadding='3' cellspacing='0' width='100%'>
         <tbody>   
-           <tr> 
-           <td class='rankingHeader' align='left' colspan='2' nowrap='nowrap'><?php echo  $lang['post_pages'];?>: <?php echo  $pages_str; ?></td>
-          <td class='rankingHeader' align='center' colspan='4' nowrap='nowrap'><?php echo $realm_info['name']; ?></td>          
-        </tr>
-        <tr>
-          <td class='rankingHeader' align='center' nowrap='nowrap'>#</td>
-          <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['name'];?>&nbsp;</td> 
-          <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['race'];?>&nbsp;</td>
-          <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['class'];?>&nbsp;</td>
-          <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['level_short'];?>&nbsp;</td>
-          <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['location'];?>&nbsp;</td>
-        </tr>
-        <?php foreach($item_res as $item){
+          <tr> 
+            <td class='rankingHeader' align='left' colspan='6' nowrap='nowrap'><?php echo  $lang['post_pages'];?>: <?php echo  $pages_str; ?></td>       
+          </tr>
+          <tr>
+            <td class='rankingHeader' align='center' nowrap='nowrap'>#</td>
+            <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['name'];?>&nbsp;</td> 
+            <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['race'];?>&nbsp;</td>
+            <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['class'];?>&nbsp;</td>
+            <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['level_short'];?>&nbsp;</td>
+            <td class='rankingHeader' align='center' nowrap='nowrap'><?echo$lang['location'];?>&nbsp;</td>
+          </tr>
+        <?php
+          $cc1 = $limit_start; 
+          foreach($item_res as $item){
           $cc1++;
           if($color==1) $color=2; else $color=1; 
         ?>
