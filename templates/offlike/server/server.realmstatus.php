@@ -56,14 +56,16 @@
                      <img src="<?php echo $config['template_href'];?>images/pixel.gif" height="1" width="1">
                     </td>
                 </tr>
-                <?php foreach($items as $item){ ?>
+                <?php foreach($items as $item){
+                  if($color==1) $color=2; else $color=1; 
+                ?>
                 <tr>
-                    <td class="serverStatus<?php echo $item['res_color'] ?>" align="center"><img src="<?php echo $item['img']; ?>" height='18' width='18'></td>
-                    <td class="serverStatus<?php echo $item['res_color'] ?>" nowrap="nowrap"><b style='color: rgb(35, 67, 3);'><?php echo "<a href=".$item['link'].">".$item['name']."</a>"; ?></b></td>
-                    <td class="serverStatus<?php echo $item['res_color'] ?>" align="center"><b style='color: rgb(102, 13, 2);'><?php echo $item['type']; ?></b></td>
-                    <td class="serverStatus<?php echo $item['res_color'] ?>" align="center"><b style='color: rgb(35, 67, 3);'><?php echo $item['pop'][1]." (".$item['pop'][2].")"; ?></b></td>
-                    <td class="serverStatus<?php echo $item['res_color'] ?>" align="center"><b style='color: rgb(35, 67, 3);'><?php echo $item['max'][1]." (".$item['max'][2].")"; ?></b></td>
-					          <td class="serverStatus<?php echo $item['res_color'] ?>" align="center" nowrap="nowrap"><b style='color: rgb(102, 13, 2);'><?php echo $item['uptime']; ?></b></td>
+                    <td class="serverStatus<?=$color ?>" align="center"><img src="<?php echo $item['img']; ?>" height='18' width='18'></td>
+                    <td class="serverStatus<?=$color ?>" nowrap="nowrap"><b style='color: rgb(35, 67, 3); font-size: 10pt;'><?php echo "<a href=".$item['link'].">".$item['name']."</a>"; ?></b></td>
+                    <td class="serverStatus<?=$color ?>" align="center"><b style='color: rgb(102, 13, 2); font-size: 10pt;'><?php echo $item['type']; ?></b></td>
+                    <td class="serverStatus<?=$color ?>" align="center"><b style='color: rgb(35, 67, 3); font-size: 10pt;'><?php echo $item['pop'][1]." (".$item['pop'][2].")"; ?></b></td>
+                    <td class="serverStatus<?=$color ?>" align="center"><b style='color: rgb(35, 67, 3); font-size: 10pt;'><?php echo $item['max'][1]." (".$item['max'][2].")"; ?></b></td>
+					          <td class="serverStatus<?=$color ?>" align="center" nowrap="nowrap"><b style='color: rgb(102, 13, 2); font-size: 10pt;'><?php echo $item['uptime']; ?></b></td>
                 </tr>
                 <?php } ?>
                 </tbody>
