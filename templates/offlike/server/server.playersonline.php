@@ -35,7 +35,8 @@
                             <td valign="top" width="100%">
                                 <span>
                                 <?php
-                                foreach($realm_list as $id=>$name){echo "<li><a href=\"index.php?n=server&sub=playersonline&realm=$id\"><b>$name</b></a></li> \n";}
+                                if (count($realm_list)!=0)
+                                  foreach($realm_list as $id=>$name){echo "<li><a href=\"index.php?n=server&sub=playersonline&realm=$id\"><b>$name</b></a></li> \n";}
                                 ?>
                                 </span>
                             </td>
@@ -91,7 +92,10 @@
           	<td class='rankingHeader' align='center' nowrap='nowrap'>Add inf.</td>
 					<?php	} ?>
         </tr>
-        <?php foreach($res_info as $res){ ?>
+        <?php
+          if (count($res_info)!=0)
+            foreach($res_info as $res){ 
+        ?>
         <tr>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?php echo $res['number']; ?></b></td>
           <td class="serverStatus<?php echo $res['res_color'] ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?php echo $res['name']; ?></b></td>
