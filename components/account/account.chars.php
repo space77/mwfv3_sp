@@ -172,8 +172,8 @@ require_once 'core/common.php';
               output_message('alert','Слишком часто переименовываетесь! <br /> Следующий ренейм возможен: '.$timenextf.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');  
             } else {
               if ($my_char->money < $config['chars_rename_cost']){
-                output_message('alert','Недостаточно средств для переименования персонажа!</br>Есть: '.$my_char->money.
-                ' Нужно: '.$config['chars_rename_cost'].'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
+                output_message('alert','Недостаточно средств для переименования персонажа!<br />Есть: '.money($my_char->money).
+                '<br />Нужно: '.money($config['chars_rename_cost']).'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
               } else {			
         				if ($my_char->RenameIsSet()){
         				  output_message('notice','Флаг переименования уже был установлен!'.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
@@ -201,9 +201,9 @@ require_once 'core/common.php';
               $timenextf=date('Y-m-d H:i:s', $timenext);
               output_message('alert','Слишком часто меняете пол! <br /> Следующая смена возможна: '.$timenextf.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');  
             } else {
-              if ($char_money < $config['chars_changesex_cost']) {
-                output_message('alert','Недостаточно средств для смены пола персонажа!</br>Есть: '.$char_money.
-                ' Нужно: '.$config['chars_changesex_cost'].'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
+              if ($my_char->money < $config['chars_changesex_cost']) {
+                output_message('alert','Недостаточно средств для смены пола персонажа!<br />Есть: '.money($my_char->money).
+                '<br />Нужно: '.money($config['chars_rename_cost']).'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
               } else {
                   $WSDB->query("INSERT INTO `mwfe3_character_actions` 
                                 (`guid`, `account`, `action`, `timeaction`, `data`) 
