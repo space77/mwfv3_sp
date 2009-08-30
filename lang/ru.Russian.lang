@@ -382,6 +382,7 @@
 |=|money :=: Деньги
 |=|doclear :=: Очистить
 |=|banlist :=: Банлист
+|=|banaction :=: Блокирование
 |=|b_foraccounts :=: По аккаунту
 |=|b_forips :=: По IP адресу
 |=|b_usernameorip :=: Аккаунт или IP

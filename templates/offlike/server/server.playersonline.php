@@ -4,6 +4,40 @@
   td.serverStatus2 { font-size: 0.8em; border-style: solid; border-width: 0px 1px 1px 0px; border-color: #D8BF95; background-color: #C3AD89; }
   td.rankingHeader { color: #C7C7C7; font-size: 10pt; font-family: arial,helvetica,sans-serif; font-weight: bold; background-color: #2E2D2B; border-style: solid; border-width: 1px; border-color: #5D5D5D #5D5D5D #1E1D1C #1E1D1C; padding: 3px;}
 </style>
+
+<script type="text/javascript">
+	function Action(realm, action, type, typeval) {
+		var bConfirmed, msg;
+		if (!isFinite(realm)) {window.event.returnValue = false; return false;}
+		if (typeval==undefined) {window.event.returnValue = false; return false;}		
+    
+    var strtype;
+		if (type=='ip') {
+		  strtype = 'IP адрес';
+    } else if (type=='character') {
+      strtype = 'персонаж';
+    } else if (type=='account'){
+      strtype = 'аккаунт';
+    } else {
+      window.event.returnValue = false; return false;
+    }
+		
+    if (action=='ban') {
+			msg='Вы действительно желаете забанить '+ strtype + ': ' +typeval+'?';
+		} else if (action=='unban') {
+			msg='Вы действительно желаете разбанить '+ strtype + ': ' +typeval+'?';
+		} else {
+			window.event.returnValue = false; return false;
+		}
+		
+		bConfirmed = true;//window.confirm(msg);
+		if (bConfirmed) {
+			window.location.href = 'index.php?n=server&sub=banaction&realm='+realm+'&action='+action+'&type='+type+'&typeval='+typeval;
+		}
+		
+		window.event.returnValue = false;
+	}
+</script>
 <center>
 
 <?php if(empty($_GET['realm'])){ ?>
@@ -89,7 +123,7 @@
           <td class='rankingHeader' align='center' nowrap='nowrap'><?echo $lang['level_short'];?>&nbsp;</td>
           <td class='rankingHeader' align='center' nowrap='nowrap'><?echo $lang['location'];?>&nbsp;</td>
           <?php if (!($user['gmlevel']==0)){ ?>
-          	<td class='rankingHeader' align='center' nowrap='nowrap'>Add inf.</td>
+          	<td class='rankingHeader' align='center' nowrap='nowrap'>&nbsp;</td>
 					<?php	} ?>
         </tr>
         <?php
@@ -97,17 +131,18 @@
             foreach($res_info as $res){ 
         ?>
         <tr>
-          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?php echo $res['number']; ?></b></td>
-          <td class="serverStatus<?php echo $res['res_color'] ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?php echo $res['name']; ?></b></td>
-          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?php echo $res['gmlevel']; ?></b></td>
+          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$res['number']; ?></b></td>
+          <td class="serverStatus<?php echo $res['res_color'] ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?=$res['name']; ?></b></td>
+          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?=$res['gmlevel']; ?></b></td>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(102, 13, 2);'><img onmouseover="ddrivetip('<?php echo $lang[$res['faction']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?php echo $res['faction'];?>.gif' height='18' width='18'></small></td>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(35, 67, 3);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_race'][$res['race']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?php echo $res['race'];?>-<?php echo $res['gender'];?>.gif' height='18' width='18'></small></td>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: (102, 13, 2);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_class'][$res['class']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/class/<?php echo $res['class'];?>.gif' height='18' width='18'></small></td>
-          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?php echo $res['level']; ?></b></td>
-          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(102, 13, 2);'><?php echo $res['pos'];?></small></td>
+          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?=$res['level']; ?></b></td>
+          <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(102, 13, 2);'><?=$res['pos'];?></small></td>
           <?php if (!($user['gmlevel']==0)){ ?>
           	<td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(35, 67, 3);'>
-							<input type="button" style="width: 20px" onClick="alert('<?php echo($res['addinfo']); ?>');" value="i" />
+							<input type="button" style="width: 20px" onClick="alert('<?php echo($res['addinfo']); ?>');" value="i" title="Дополнительная информация" />
+							<input type="button" style="width: 20px" onClick="Action(<?=$_GET['realm'];?>, 'ban', 'character', '<?=$res['name'];?>');" value="b" title="Забанить" />
 						</small></td>
 					<?php	} ?>
         </tr>

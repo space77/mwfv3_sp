@@ -388,6 +388,7 @@
 |=|doclear :=: Clear
 
 |=|banlist :=: Banlist
+|=|banaction :=: Ban Action
 |=|b_foraccounts :=: For Accounts
 |=|b_forips :=: For IP address
 |=|b_usernameorip :=: Account or IP

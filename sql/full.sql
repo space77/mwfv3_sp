@@ -249,5 +249,7 @@ alter table `realmlist`
   add column `CharacterDatabaseInfo` varchar (255) DEFAULT '127.0.0.1;3306;root;mangos;characters' NULL  COLLATE utf8_general_ci, 
 	add column `WorldDatabaseInfo` varchar (255) DEFAULT '127.0.0.1;3306;root;mangos;mangos' NULL  COLLATE utf8_general_ci,
   add column `Version` int (11) DEFAULT '243' NULL  after `WorldDatabaseInfo`,
-  add column `WowdCharInfoLink` varchar (255)  NULL  after `Version`; 	
+  add column `WowdCharInfoLink` varchar (255)  NULL  after `Version`,
+  add column `cloneid` int(11)  DEFAULT '-1' NOT NULL after `WowdCharInfoLink`,
+  add column `raport` int(11) DEFAULT '3443' NOT NULL after `cloneid`;	
 	

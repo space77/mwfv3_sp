@@ -25,7 +25,7 @@
 			if (info==undefined) {window.event.returnValue = false; return false;}
 			msg='Вы действительно желаете обменять персонажа: '+charname+' с аккаунтом: '+info;
 		} else {
-			{window.event.returnValue = false; return false;}
+			window.event.returnValue = false; return false;
 		}
 		
 		bConfirmed = window.confirm(msg);
