@@ -31,15 +31,13 @@ if($_GET['id'] > 0){
 		  $newI = sha1(strtoupper(trim($profile['username'])).":".strtoupper(trim($newpass)));
 		  $currI = $DB->selectCell("SELECT `sha_pass_hash` FROM account WHERE `id`=?d LIMIT 1",$_GET['id']);
 		  if((strlen($newpass)>=4) && (strlen($newpass)<=16)){
-          if($DB->query("UPDATE `account` SET `sha_pass_hash`=? WHERE `id`=?d LIMIT 1",$newI,$_GET['id'])){
+          if($DB->query("UPDATE `account` SET `sha_pass_hash`=?, v='0', s='0' WHERE `id`=?d LIMIT 1",$newI,$_GET['id'])){
             $currI = $DB->selectCell("SELECT `sha_pass_hash` FROM `account` WHERE `id`=?d LIMIT 1",$_GET['id']);
             output_message('notice','<b>'.$lang['change_pass_succ'].'</b><meta http-equiv=refresh content="2;url=index.php?n=admin&sub=members&id='.$_GET['id'].'">');
-          }
-          else{
+          } else{
           	if ($newI!==$currI){
           		output_message('alert','<b>'.'Error change password.'.'</b><meta http-equiv=refresh content="2;url=index.php?n=admin&sub=members&id='.$_GET['id'].'">');
-          	}
-          	else{
+          	} else{
           		output_message('notice','<b>'.$lang['change_pass_equal'].'</b><meta http-equiv=refresh content="2;url=index.php?n=admin&sub=members&id='.$_GET['id'].'">');
           	}
           }
