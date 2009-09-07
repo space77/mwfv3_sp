@@ -141,11 +141,14 @@ sub sendcmd {
   @line = $t->cmd(String=>$cmd) or die errhandler ('NotResponse');
   $t->close();
   
+  $result="Error";
   for $element (@line) {
+    if ($element=~/$cmdcheck/ig) {
+      $result='OK';
+    } 
     $resultmsg .= $element."<br />\n";
   }
   $resultmsg =~ s!\n! !g;
-  $result="OK";
 }
 
 sub printargs {
@@ -179,10 +182,13 @@ $myuser = $input{'myuser'};
 $mypass = $input{'mypass'};
 
 $cmd='';
+$cmdcheck='';
 if ($action eq 'ban'){
     $cmd = 'ban '.$type.' '.$typeval.' '.$bantime.' "'.$reason.'"';
+    $cmdcheck = $typeval.' is banned';
 } elsif ($action eq 'unban') {
     $cmd = 'unban '.$type.' '.$typeval;
+    $cmdcheck = $typeval.' unbanned';
 }
 
 sendcmd;
