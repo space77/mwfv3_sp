@@ -50,7 +50,7 @@ $pathway_info[] = array('title'=>$lang['banlist'],'link'=>'');
 		    } else {
           $res_info_ip[$cc]["unbandate"] = date('Y-m-d H:i:s', $result['unbandate']);
         }
-        $res_info_ip[$cc]["banedby"] = $result['banedby'];
+        $res_info_ip[$cc]["bannedby"] = $result['bannedby'];
 		    $res_info_ip[$cc]["banreason"] = $result['banreason'];
     }
 ?>
