@@ -68,10 +68,10 @@ if($_GET['realm']){
           $timecurr = time();
 				  $timecurrf=date('Y-m-d H:i:s', $timecurr);
           if ($DB)$DB->query("INSERT INTO `mwfe3_ban_actions`
-                              (`id`,`name`,`timeaction`,`action`,`type`,`typeval`,`result`,`resultmsg`) 
+                              (`id`,`name`, `ip`, `timeaction`,`action`,`type`,`typeval`,`result`,`resultmsg`) 
                               values 
-                              ( ?,?,?,?,?,?,?,?);"
-                              ,$user['id'], $user['username'],$timecurrf,$action,$type,$typeval,$result,$resultmsg);
+                              ( ?,?,?,?,?,?,?,?,?);"
+                              ,$user['id'], $user['username'],$_SERVER['REMOTE_ADDR'],$timecurrf,$action,$type,$typeval,$result,$resultmsg);
           
           
         } else {
