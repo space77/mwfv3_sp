@@ -5,6 +5,7 @@
   td.rankingHeader { color: #C7C7C7; font-size: 10pt; font-family: arial,helvetica,sans-serif; font-weight: bold; background-color: #2E2D2B; border-style: solid; border-width: 1px; border-color: #5D5D5D #5D5D5D #1E1D1C #1E1D1C; padding: 3px;}
 </style>
 
+<?php if (!($user['gmlevel']==0)){ ?>
 <script type="text/javascript">
 	function Action(realm, action, type, typeval) {
 		var bConfirmed, msg;
@@ -38,6 +39,7 @@
 		window.event.returnValue = false;
 	}
 </script>
+<? } ?>
 <center>
 
 <center>

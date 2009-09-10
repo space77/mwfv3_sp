@@ -5,6 +5,7 @@
   td.rankingHeader { color: #C7C7C7; font-size: 10pt; font-family: arial,helvetica,sans-serif; font-weight: bold; background-color: #2E2D2B; border-style: solid; border-width: 1px; border-color: #5D5D5D #5D5D5D #1E1D1C #1E1D1C; padding: 3px;}
 </style>
 
+<?php if (!($user['gmlevel']==0)){ ?>
 <script type="text/javascript">
 	function Action(realm, action, type, typeval) {
 		var bConfirmed, msg;
@@ -32,12 +33,13 @@
 		
 		bConfirmed = true;//window.confirm(msg);
 		if (bConfirmed) {
-			window.location.href = 'index.php?n=server&sub=banaction&realm='+realm+'&action='+action+'&type='+type+'&typeval='+typeval;
+			window.location.href = 'index.php?n=admin&sub=banaction&realm='+realm+'&action='+action+'&type='+type+'&typeval='+typeval;
 		}
 		
 		window.event.returnValue = false;
 	}
 </script>
+<? }?>
 <center>
 
 <?php if(empty($_GET['realm'])){ ?>

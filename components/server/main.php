@@ -77,12 +77,5 @@ $com_content['server'] = array(
         '4-menuInteractive',
         0
     ),
-    'banaction' => array(
-        '', 
-        'banaction', 
-        'index.php?n=server&sub=banaction',
-        '4-menuInteractive',
-        0
-    ),
 );
 ?>

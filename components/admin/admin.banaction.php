@@ -2,8 +2,9 @@
 if(INCLUDED!==true)exit;
 require_once 'core/defines.php';
 require_once 'core/common.php';
+
 // ==================== //
-$pathway_info[] = array('title'=>$lang['banaction'],'link'=>'index.php?n=server&sub=banaction');
+$pathway_info[] = array('title'=>$lang['banaction'],'link'=>'index.php?n=admin&sub=banaction');
 // ==================== //
 
 if ($user['gmlevel']==0) {
@@ -62,6 +63,17 @@ if($_GET['realm']){
           $typeval = $_POST['typeval'];
           $reason = $_POST['reason'];
           $bantime = $_POST['bantime'];
+          
+          //Logs
+          $timecurr = time();
+				  $timecurrf=date('Y-m-d H:i:s', $timecurr);
+          if ($DB)$DB->query("INSERT INTO `mwfe3_ban_actions`
+                              (`id`,`name`,`timeaction`,`action`,`type`,`typeval`,`result`,`resultmsg`) 
+                              values 
+                              ( ?,?,?,?,?,?,?,?);"
+                              ,$user['id'], $user['username'],$timecurrf,$action,$type,$typeval,$result,$resultmsg);
+          
+          
         } else {
           $action = $_GET['action'];
           $type = $_GET['type'];
@@ -95,6 +107,8 @@ if($_GET['realm']){
                                     WHERE `id`=?", $accid);
               }  
           }
+          
+          
           
           output_message('notice','OK! </br>'.$resultmsg); //.'</br>'.'<meta http-equiv=refresh content="2;url='.$rurl.'">');
         } elseif ($result=='Error') {

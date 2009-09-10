@@ -8,18 +8,12 @@
             <b>Last login (game):</b> <?php echo$profile['last_login'];?><br>
             <b>Last login (game) IP:</b> <?php echo$profile['last_ip'];?><br>
             <hr>
+            <? if($profile['active']==1){ ?>
+              <a href="index.php?n=admin&sub=banaction&realm=1&action=unban&type=account&typeval=<?=$profile['username']?>" title="Разбанить"><b>[<font color="red">Unban</font>]</b></a>  
+            <? }elseif($profile['active']==0){ ?>
+              <a href="index.php?n=admin&sub=banaction&realm=1&action=ban&type=account&typeval=<?=$profile['username']?>" title="Забанить"><b>[<font color="red">Ban</font>]</b></a>
+            <? } ?>
         </div>
-        <?php if($profile['active']==1){ ?>
-			<a href="index.php?n=admin&sub=members&id=<?php echo$_GET['id'];?>&action=unban"><b>[<font color="red">Unban</font>]</b></a>
-        <?php }elseif($profile['active']==0){ ?>
-			<form method="post" action="index.php?n=admin&sub=members&id=<?php echo$_GET['id'];?>&action=ban">
-			<div style="border: 2px dotted #1E4378;background:none;margin:4px;padding:6px 9px 6px 9px;text-align:right;width:70%;">
-				<b>Unban date</b> <input type="date" size="22" name="ban_date">
-				<b>Reason</b> <input type="text" size="22" name="reason">
-				<input type="submit" value="Ban" class="button" style="font-size:11px;">
-			</div>
-			</form>
-        <?php } ?>		
         <form method="post" action="index.php?n=admin&sub=members&id=<?php echo$_GET['id'];?>&action=changepass">
         <div style="border: 2px dotted #1E4378;background:none;margin:4px;padding:6px 9px 6px 9px;text-align:right;width:70%;">
             <b>New password</b> <input type="password" size="22" name="new_pass">

@@ -62,6 +62,13 @@ $com_content['admin'] = array(
         'index.php?n=admin&sub=menu',
         '',
         1
-    )
+    ),
+    'banaction' => array(
+        'g_is_admin', 
+        'banaction', 
+        'index.php?n=admin&sub=banaction',
+        '',
+        1
+    ),
 );
 ?>

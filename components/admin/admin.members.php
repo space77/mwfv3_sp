@@ -7,9 +7,10 @@ $oldInactiveTime = 3600*24*7;
 if($_GET['id'] > 0){
     if(!$_GET['action']){
         $profile = $auth->getprofile($_GET['id']);
-            $allgroups = $DB->selectCol("SELECT g_id AS ARRAY_KEY, g_title FROM account_groups");
+        $allgroups = $DB->selectCol("SELECT g_id AS ARRAY_KEY, g_title FROM account_groups");
         
-        $pathway_info[] = array('title'=>$lang['users_manage'],'link'=>$com_links['sub_members']);
+        //$pathway_info[] = array('title'=>$lang['users_manage'],'link'=>$com_links['sub_members']);
+        $pathway_info[] = array('title'=>$lang['users_manage'],'link'=>'index.php?n=admin&sub=members');
         $pathway_info[] = array('title'=>$profile['username'],'link'=>'');
             
         $txt['yearlist'] = "\n";
@@ -46,10 +47,10 @@ if($_GET['id'] > 0){
 			}
 
     }elseif($_GET['action']=='ban'){
-		$reason = $_POST['reason'];
-		$admin_name = $cookie['username'];
-        $DB->query("INSERT INTO account_banned VALUES (?d, ?, UNIX_TIMESTAMP(?), ?, ?, '1')", $_GET['id'], time(), $_POST['ban_date'], $user['username'], $reason);
-		redirect('index.php?n=admin&sub=members&id='.$_GET['id'],1);
+  		$reason = $_POST['reason'];
+  		$admin_name = $cookie['username'];
+      $DB->query("INSERT INTO account_banned VALUES (?d, ?, UNIX_TIMESTAMP(?), ?, ?, '1')", $_GET['id'], time(), $_POST['ban_date'], $user['username'], $reason);
+  		redirect('index.php?n=admin&sub=members&id='.$_GET['id'],1);
     }elseif($_GET['action']=='unban'){
         $DB->query("UPDATE `account_banned` SET `active` = '0' WHERE `id` = ?d",$_GET['id']);
         redirect('index.php?n=admin&sub=members&id='.$_GET['id'],1);

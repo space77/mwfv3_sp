@@ -37,7 +37,7 @@ if(empty($_GET['realm'])){ ?>
                                 <span>
                                 <?php
                                 if (count($realm_list)!=0)
-                                  foreach($realm_list as $id=>$name){echo "<li><a href=\"index.php?n=server&sub=banaction&realm=$id\"><b>$name</b></a></li> \n";}
+                                  foreach($realm_list as $id=>$name){echo "<li><a href=\"index.php?n=admin&sub=banaction&realm=$id\"><b>$name</b></a></li> \n";}
                                 ?>
                                 </span>
                             </td>
