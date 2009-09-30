@@ -23,6 +23,9 @@
     #cnt-wrapper{ padding-right:0px !important; padding-left:0px !important; }
 </style>
 <br>
+
+<? if (!$not_allow) { ?>
+
 <div id="search">   
     <?php if($user['id']>0){ ?>
     <ul>
@@ -59,6 +62,7 @@
         </span>
         </div>
         </div>
+        
         
         <div id="postbackground">
         <div class="right">
@@ -109,7 +113,7 @@
         <div class="tbottom"></div>
         <div style="position: relative; width: 100%;">
         <div style="position: absolute; right: 20px; top: -38px;">
-        <!--
+        <!-- 
         <span><small class="nav">Forum Nav :</small></span>
         <small>
             <select id="selectnav-footer" style="display:inline; width: 185px; margin-left: 10px;">             
@@ -128,7 +132,7 @@
     </table>
 </td>
 </tr>
-</table>
+</table> 
 <!--
 <div style="padding: 10px;" align="center">
 <span><b>Icon Legend</b> [ <a href="#">More Details</a> ]</span>
@@ -155,3 +159,4 @@
 </tbody></table>
 </div>
 -->
+<? } ?>

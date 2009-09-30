@@ -16,6 +16,16 @@ elseif($_GET['action']=='editpost')$pathway_info[] = array('title'=>$lang['editp
 // ==================== //
 $post_time = time();
 
+$not_allow = false;
+if (($this_forum['hidden']==1) AND (($user['id'] <= 0) OR ($user['gmlevel'] <= 0))) {
+  $not_allow = true;
+}  
+
+if ($not_allow) {
+  //print_r($lang['youhavenorights']);
+  output_message('alert', 'Нет прав для просмотра этой страницы!'.'<meta http-equiv=refresh content="2;url=index.php?n=forum">');
+} else {
+
 if($user['id']>0){
 
 if($_GET['action']=='donewtopic' && $this_forum['forum_id']>0){
@@ -137,6 +147,8 @@ if($_GET['action']=='donewtopic' && $this_forum['forum_id']>0){
     }
     header("location:index.php?n=forum/viewforum&fid=".$_GET['to']);
     */
+}
+
 }
 
 }

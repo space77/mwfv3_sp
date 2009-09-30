@@ -21,6 +21,16 @@ $pathway_info[] = array('title'=>$this_forum['forum_name'],'link'=>$this_forum['
 $pathway_info[] = array('title'=>$this_topic['topic_name'],'link'=>'');
 // ================================================= //
 
+$not_allow = false;
+if (($this_forum['hidden']==1) AND (($user['id'] <= 0) OR ($user['gmlevel'] <= 0))) {
+  $not_allow = true;
+} 
+
+if ($not_allow) {
+  //print_r($lang['youhavenorights']);
+  output_message('alert', 'Нет прав для просмотра этой страницы!'.'<meta http-equiv=refresh content="2;url=index.php?n=forum">');
+} else {
+
 $bgswitch = '2';
   //===== Calc pages =====//
   $items_per_pages = $config['posts_per_page'];
@@ -126,6 +136,7 @@ foreach($result as $cur_post)
   $posts[] = $cur_post;
 }
 unset($result);
+}
 
 function clean_read_topics($var)
 {

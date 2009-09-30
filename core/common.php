@@ -14,7 +14,6 @@ if(!function_exists('file_put_contents')){
 }
 function output_message($type,$text,$file='',$line=''){
     global $messages;
-
     if($file)$text .= "\n<br>in file: $file";
     if($line)$text .= "\n<br>on line: $line";
     $messages .= "\n<div class=\"".$type."_box\">$text</div> \n";

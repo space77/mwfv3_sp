@@ -34,6 +34,7 @@
     }
 </script>
 
+<? if (!$not_allow) { ?>
 <div id="search">   
     <ul>
         <li class="a"></li>
@@ -294,4 +295,4 @@
         <input type="submit" value="<?php echo $lang['editor_send'];?>" class="input_btn_big" />
     </form>
     </div>
-<?php } ?>
+<?php }} ?>

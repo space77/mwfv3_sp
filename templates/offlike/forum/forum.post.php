@@ -21,6 +21,8 @@
   }
   // -->
   </script>
+
+<? if (!$not_allow) { ?>
 <hr class="hidden" />
 <div id="write_form" class="subsections">
 <h2><?php echo current(end($pathway_info));?></h2>
@@ -53,3 +55,4 @@
   
 <?php } ?>
 </div>
+<? } ?>
