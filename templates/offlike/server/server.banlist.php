@@ -33,7 +33,7 @@
 		
 		bConfirmed = true;//window.confirm(msg);
 		if (bConfirmed) {
-			window.location.href = 'index.php?n=server&sub=banaction&realm='+realm+'&action='+action+'&type='+type+'&typeval='+typeval;
+			window.location.href = 'index.php?n=admin&sub=banaction&realm='+realm+'&action='+action+'&type='+type+'&typeval='+typeval;
 		}
 		
 		window.event.returnValue = false;
