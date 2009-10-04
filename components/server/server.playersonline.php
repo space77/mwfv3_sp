@@ -21,10 +21,11 @@ if($_GET['realm']){
   $cc = 0;
   
   AddMangosFields ($realm_info['Version']);
-		
-    $faction_alliance = 0;
-    $faction_horde = 0;
-    $total = 0;
+	$charinfo_link = $realm_info['WowdCharInfoLink'];
+  
+  $faction_alliance = 0;
+  $faction_horde = 0;
+  $total = 0;
     
     if(check_port_status($realm_info['address'], $realm_info['port'])!==true) {
         output_message('alert','Realm <b>'.$realm_info['name'].'</b> is offline <img src="images/downarrow2.gif" border="0" align="top">');
@@ -62,6 +63,7 @@ if($_GET['realm']){
         $res_info[$cc]["level"]   = $my_char->level;
         $res_info[$cc]["pos"] = $res_pos;
         $res_info[$cc]["faction"] =$char_faction;
+        $res_info[$cc]["char_link"]=($charinfo_link=="") ? "#" : $charinfo_link.$my_char->guid;
         $res_info[$cc]["gmlevel"] =get_gmlevelstr($result['gmlevel']);
         $res_info[$cc]["addinfo"] = "Имя персонажа {guid}: ".$my_char->name." {".$my_char->guid."} ;"."\\n".
         														"Имя аккаунта: {id}: ".$result['username']." {".$result['id']."} ;"."\\n".

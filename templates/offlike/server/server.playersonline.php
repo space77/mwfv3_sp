@@ -134,7 +134,13 @@
         ?>
         <tr>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(102, 13, 2);'><?=$res['number']; ?></b></td>
-          <td class="serverStatus<?php echo $res['res_color'] ?>"><b class='smallBold' style='color: rgb(35, 67, 3);'><?=$res['name']; ?></b></td>
+          <td class="serverStatus<?php echo $res['res_color'] ?>">
+            <a href="<?php echo $res['char_link']; ?>">
+						  <b class='smallBold' style='color: rgb(35, 67, 3);'>
+							 <?php echo $res['name']; ?>
+							</b>
+						</a>
+          </td>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><b style='color: rgb(35, 67, 3);'><?=$res['gmlevel']; ?></b></td>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(102, 13, 2);'><img onmouseover="ddrivetip('<?php echo $lang[$res['faction']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?php echo $res['faction'];?>.gif' height='18' width='18'></small></td>
           <td class="serverStatus<?php echo $res['res_color'] ?>" align='center'><small style='color: rgb(35, 67, 3);'><img onmouseover="ddrivetip('<?php echo $site_defines['character_race'][$res['race']]; ?>','#ffffff')" onmouseout="hideddrivetip()" src='templates/offlike/images/icon/race/<?php echo $res['race'];?>-<?php echo $res['gender'];?>.gif' height='18' width='18'></small></td>
