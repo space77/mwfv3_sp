@@ -465,8 +465,8 @@ function AT_GetPoints($TeamType, $TeamRating, $MemberRating, $TeamGames, $Member
 function AddMangosFields ($ver) {
 		if ($ver !==''){
 			 require_once ('core/cache/'.$ver.'_UpdateFields.php');
-			 if ($ver==313){
-          require_once ('core/313_mangos_fn.php');
+			 if ($ver>=313){
+          require_once ('core/'.$ver.'_mangos_fn.php');
        } else {
           require_once ('core/def_mangos_fn.php');
        }
