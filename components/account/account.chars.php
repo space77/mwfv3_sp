@@ -9,7 +9,8 @@ require_once 'core/common.php';
 	//===== Calc pages1 =====//
 	$items_per_pages = $config['users_per_page'];
  	$limit_start = ($p-1)*$items_per_pages;
-
+  $isadmin = (($user['gmlevel'] >= 1) && ($user['gmlevel'] <= 3));
+  
 	if($user['id']<=0){
 		redirect('index.php?n=account&sub=login',1);
 	} else {
@@ -166,12 +167,12 @@ require_once 'core/common.php';
 				  if (!$config['chars_rename_enable']) {
 				    output_message('alert','Переименование персонажей запрещено!'.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');  
           } else {
-            if ($timediffh < $config['chars_rename_hdiff']) {
+            if (($timediffh < $config['chars_rename_hdiff']) and !$isadmin) {
               $timenext = $timeaction + 3600 * $config['chars_rename_hdiff'];
               $timenextf=date('Y-m-d H:i:s', $timenext);
               output_message('alert','Слишком часто переименовываетесь! <br /> Следующий ренейм возможен: '.$timenextf.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');  
             } else {
-              if ($my_char->money < $config['chars_rename_cost']){
+              if (($my_char->money < $config['chars_rename_cost']) and !$isadmin) {
                 output_message('alert','Недостаточно средств для переименования персонажа!<br />Есть: '.money($my_char->money).
                 '<br />Нужно: '.money($config['chars_rename_cost']).'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
               } else {			
@@ -196,12 +197,12 @@ require_once 'core/common.php';
 				  if (!$config['chars_changesex_enable']) {
 				    output_message('alert','Смена пола персонажей запрещена!'.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');  
           } else {
-            if ($timediffh < $config['chars_changesex_hdiff']) {
+            if (($timediffh < $config['chars_changesex_hdiff'])  and !$isadmin) {
               $timenext = $timeaction + 3600 * $config['chars_changesex_hdiff'];
               $timenextf=date('Y-m-d H:i:s', $timenext);
               output_message('alert','Слишком часто меняете пол! <br /> Следующая смена возможна: '.$timenextf.'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');  
             } else {
-              if ($my_char->money < $config['chars_changesex_cost']) {
+              if (($my_char->money < $config['chars_changesex_cost'])  and !$isadmin){
                 output_message('alert','Недостаточно средств для смены пола персонажа!<br />Есть: '.money($my_char->money).
                 '<br />Нужно: '.money($config['chars_rename_cost']).'<meta http-equiv=refresh content="2;url=index.php?n=account&sub=chars">');
               } else {
