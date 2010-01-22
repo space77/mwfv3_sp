@@ -58,8 +58,7 @@ class AUTH {
                 output_message('alert','Your account is not active');
                 return false;
             }
-            
-            if($cookie['password_hash'] == $res['sha_pass_hash']){
+            if($cookie['password_hash'] == strtoupper($res['sha_pass_hash'])){
                 unset($res['sha_pass_hash']);
                 $this->user = $res;
                 return true;
@@ -111,9 +110,9 @@ class AUTH {
             $this->user['id'] = $res['id'];
             $this->user['name'] = $res['username'];
             $this->user['level'] = $res['gmlevel'];
-            $uservars_hash = serialize(array($res['id'], $res['sha_pass_hash']));
+            $uservars_hash = serialize(array($res['id'], STRTOUPPER($res['sha_pass_hash'])));
             setcookie($this->config['site_cookie'], $uservars_hash, time()+(60*60*24*365),$this->config['site_href'],$this->config['site_domain']); // expires in 365 days
-            if($this->config['onlinelist_on'])$this->onlinelist_delguest(); // !!
+            if($this->config['onlinelist_on'])$this->onlinelist_delguest();
             return true;
         }else{
             output_message('alert','Your password is incorrect');
