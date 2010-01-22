@@ -106,7 +106,8 @@ class AUTH {
         }
             
         if($success!=1) return false;
-        if($res['sha_pass_hash'] == $this->gethash(strtoupper(trim($params['username'])).":".strtoupper(trim($params['password'])))){
+        $res['sha_pass_hash'] = strtoupper($res['sha_pass_hash']);
+        if($res['sha_pass_hash'] == strtoupper($this->gethash(strtoupper(trim($params['username'])).":".strtoupper(trim($params['password']))))){
             $this->user['id'] = $res['id'];
             $this->user['name'] = $res['username'];
             $this->user['level'] = $res['gmlevel'];
@@ -149,6 +150,10 @@ class AUTH {
             output_message('alert','You did not provide your username');
             $success = 0;
         }
+        if(strlen($params['password']) > 16){
+            output_message('alert','Максимальная длинна пароля не должна привышать 16 символов');
+            $success = 0;
+        }
         if(empty($params['password']) || $params['password']!=$params['password2']){
             output_message('alert','You did not provide your password or confirm pass');
             $success = 0;
@@ -161,7 +166,7 @@ class AUTH {
         if($success!=1) return false;
 		    $tmp_pass = $params['password'];
 		    $params['username']=strtoupper(trim($params['username']));
-        $params['sha_pass_hash'] = sha1(strtoupper(trim($params['username'])).":".strtoupper(trim($params['password'])));
+        $params['sha_pass_hash'] = strtoupper(sha1(strtoupper(trim($params['username'])).":".strtoupper(trim($params['password']))));
 		unset($params['password']);
 		unset($params['password2']);
         if((bool)$this->config['req_reg_act']===true){

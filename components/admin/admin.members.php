@@ -29,8 +29,8 @@ if($_GET['id'] > 0){
     }elseif($_GET['action']=='changepass'){
 		  $profile = $auth->getprofile($_GET['id']);
 		  $newpass = strtoupper(trim($_POST['new_pass']));
-		  $newI = sha1(strtoupper(trim($profile['username'])).":".strtoupper(trim($newpass)));
-		  $currI = $DB->selectCell("SELECT `sha_pass_hash` FROM account WHERE `id`=?d LIMIT 1",$_GET['id']);
+		  $newI = srttoupper(sha1(strtoupper(trim($profile['username'])).":".strtoupper(trim($newpass))));
+		  $currI = strtiupper($DB->selectCell("SELECT `sha_pass_hash` FROM account WHERE `id`=?d LIMIT 1",$_GET['id']));
 		  if((strlen($newpass)>=4) && (strlen($newpass)<=16)){
           if($DB->query("UPDATE `account` SET `sha_pass_hash`=?, v='0', s='0' WHERE `id`=?d LIMIT 1",$newI,$_GET['id'])){
             $currI = $DB->selectCell("SELECT `sha_pass_hash` FROM `account` WHERE `id`=?d LIMIT 1",$_GET['id']);

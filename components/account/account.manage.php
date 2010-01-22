@@ -32,8 +32,8 @@ if($user['id']<=0){
       if ($newpass!=$newpassconfirm){
 			 $bOK = false;
       }
-			$newI = sha1(strtoupper(trim($profile['username'])).":".strtoupper(trim($newpass)));
-			$currI = $DB->selectCell("SELECT `sha_pass_hash` FROM `account` WHERE `id`=?d LIMIT 1",$user['id']);
+			$newI = strtoupper(sha1(strtoupper(trim($profile['username'])).":".strtoupper(trim($newpass))));
+			$currI = strtoupper($DB->selectCell("SELECT `sha_pass_hash` FROM `account` WHERE `id`=?d LIMIT 1",$user['id']));
       if((strlen($newpass)>=4) && (strlen($newpass)<=16) && $bOK){
           if($DB->query("UPDATE `account` SET `sha_pass_hash`=?, v='0', s='0' WHERE `id`=?d LIMIT 1",$newI,$user['id'])==1){
           			$auth->login(array('username'=>$profile['username'],'password'=>$newpass));
