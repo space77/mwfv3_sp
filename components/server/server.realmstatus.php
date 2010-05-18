@@ -9,9 +9,11 @@ $pathway_info[] = array('title'=>$lang['realms_status'],'link'=>'');
 $ids = $DB->select("SELECT id FROM `realmlist` ORDER BY `name`");
 foreach($ids as $i => $result)
 {
-  $realm_info = get_realm_byid($result['id']);  
-  if(check_port_status($realm_info['address'], $realm_info['port'])===true) {
-    $rid = (($realm_info['cloneid']== -1) ? $realm_info['id'] : $realm_info['cloneid']);  
+  $realm_info = get_realm_byid($result['id']);
+  $rid = (($realm_info['cloneid']== -1) ? $realm_info['id'] : $realm_info['cloneid']);
+  $rrealm_info = get_realm_byid($rid); 
+  if(check_port_status($rrealm_info['address'], $rrealm_info['port'])===true) {
+//    $rid = (($realm_info['cloneid']== -1) ? $realm_info['id'] : $realm_info['cloneid']);  
   
     if($DB)$uptimerow = $DB->selectRow("SELECT * FROM `uptime` WHERE `realmid`=".$rid." ORDER BY `starttime` DESC   LIMIT 0,1");   
     if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);

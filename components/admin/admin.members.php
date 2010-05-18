@@ -26,6 +26,7 @@ if($_GET['id'] > 0){
                 $txt['yearlist'] .= "<option value='$i'".($i==$profile['bd_year']?' selected':'')."> $i </option>\n";
             }
             $profile['signature'] = str_replace('<br />','',$profile['signature']);
+            //print_r($profile);exit;
     }elseif($_GET['action']=='changepass'){
 		  $profile = $auth->getprofile($_GET['id']);
 		  $newpass = strtoupper(trim($_POST['new_pass']));
@@ -128,9 +129,9 @@ if($_GET['id'] > 0){
     $limit_start = ($p-1)*$items_per_pages;
     
     $items = $DB->select("
-        SELECT `account`.`id`,`username`,`email`,`homepage`,`icq`,`joindate`,`locked`,`active` FROM account 
+        SELECT `account`.`id`,`username`,`email`,`homepage`,`icq`,`joindate`,`locked`,COALESCE(`active`,0) as `active` FROM account 
         LEFT JOIN account_extend ON account.id=account_extend.account_id 
-		LEFT JOIN account_banned ON (account_banned.id=account.id AND account_banned.active=1) OR account_banned.id=''
+		    LEFT JOIN account_banned ON (account_banned.id=account.id AND account_banned.active=1)
         $filter 
         ORDER BY username 
         LIMIT $limit_start,$items_per_pages");

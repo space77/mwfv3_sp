@@ -7,6 +7,7 @@ $pathway_info[] = array('title'=>$lang['honor'],'link'=>'index.php?n=server&sub=
 // ==================== //
 // some config //
 $max_display_chars = 40; // Only top 40 in stats
+$realm_list = realm_list();
 
 if(!$_GET['realm']){
     $realm_list = realm_list();
@@ -30,12 +31,9 @@ if($_GET['realm']){
     
     AddMangosFields ($realm_info['Version']);
       	
-   	$qstr= "SELECT guid FROM
-              (SELECT c.guid
-   	                  , CAST( SUBSTRING_INDEX(SUBSTRING_INDEX(c.`data`, ' ', ".($mangos_field['PLAYER_FIELD_HONOR_CURRENCY']+1)."), ' ', -1) AS UNSIGNED) AS honor
-					     FROM `characters` AS c, `".$config['db_name']."`.`account` as a
-					     WHERE ((c.`account`= a.`id`) AND (a.`gmlevel`=0) AND (c.`race` IN (?a)))) AS tbl
-            WHERE honor > 0 ORDER BY honor DESC LIMIT ".$max_display_chars.";";
+   	$qstr= "SELECT * FROM `characters` AS c, `".$config['db_name']."`.`account` as a
+					     WHERE ((c.`account`= a.`id`) AND (a.`gmlevel`=0) AND (c.`race` IN (?a))
+            AND (c.totalHonorPoints > 0)) ORDER BY c.totalHonorPoints DESC LIMIT ".$max_display_chars.";";
     
     $allhonor['alliance'] = array();
     $allhonor['horde'] = array();
@@ -43,12 +41,11 @@ if($_GET['realm']){
     {
       if ($i==1) {
         $faction='alliance';
-        if ($CHDB)$guids=$CHDB->select($qstr, $site_defines['characrer_race_alliance']);
+        if ($CHDB)$chars=$CHDB->select($qstr, $site_defines['characrer_race_alliance']);
       } else {
         $faction='horde';
-        if ($CHDB)$guids=$CHDB->select($qstr, $site_defines['characrer_race_horde']);
+        if ($CHDB)$chars=$CHDB->select($qstr, $site_defines['characrer_race_horde']);
       }
-      if (count($guids) > 0)$chars=$CHDB->select("SELECT * FROM `characters` WHERE `guid` IN (?a)", array_map("getguid", $guids));
 
       foreach($chars as $char){
         $my_char = new character($char, $mangos_field);

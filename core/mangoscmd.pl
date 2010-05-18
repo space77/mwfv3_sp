@@ -2,12 +2,6 @@
 
 use Net::Telnet ();
 
-$rurl;
-%hfields =();
-%input="";
-$result="";
-$resultmsg="";
-
 sub urldecode{    #очень полезная функция декодирования
  local($val)=@_;  #запроса,будет почти в каждой вашей CGI-программе
  $val=~s/\+/ /g;
@@ -24,10 +18,9 @@ sub get_parameters {
   } else {
     read(STDIN, $in, $ENV{'CONTENT_LENGTH'});
   }
-  $in = urldecode($in);
-  
+  $in = urldecode($in); 
   @in = split(/[&;]/,$in);
-
+ 	
   foreach $i (0 .. $#in) {
     $in[$i] =~ s/\+/ /g;
     ($key, $val) = split(/=/,$in[$i],2);
@@ -45,10 +38,10 @@ sub get_parameters {
     $val =~ s!\n\n!<p>!g;
     $val =~ s!\n! !g;
 
-    $in{$key} .= "\0" if (defined($in{$key}));
-    $in{$key} .= $val;
+    $inargs{$key} .= "\0" if (defined($inargs{$key}));
+    $inargs{$key} .= $val;
   }
-  return scalar(@in);
+  return scalar($input);
 }
 
 sub myredirect {
@@ -131,10 +124,10 @@ sub sendcmd {
                         Errmode => "return"
   );                  
   $t->open() or die errhandler ('NotConnect');
-  $t->waitfor(String=>'Wellcome to WOW Server v3.1.3. Massacre.Net.');
-  $t->print('USER '.$myuser);
+  $t->waitfor(String=>'Wellcome to WOW Server v3.3.2. Massacre.Net.');
+  $t->print($myuser);
   sleep(1);
-  $t->print('PASS '.$mypass);
+  $t->print($mypass);
   sleep(1);
   $t->waitfor(String=>'+Logged in.') or die errhandler ('WrongUserOrPass');
   $t->waitfor(Match=>'m/mangos>/') or die errhandler ('NotResponse');
@@ -152,6 +145,7 @@ sub sendcmd {
 }
 
 sub printargs {
+  print "input is: $input<br>\n";
   print "rurl is: $rurl<br>\n";
   print "action is: $action<BR>\n";
   print "type is: $type<BR>\n";
@@ -166,20 +160,27 @@ sub printargs {
 
 print "Content-Type: text/html\n\n";
 
+my %input="";
+$rurl;
+%hfields =();
+$result="";
+$resultmsg="";
+%inargs =();
+
 get_parameters(*input);
-$rurl = $input{'rurl'};
+$rurl = $inargs{'rurl'};
 $rurl =~ s!_and_!&!ig;
-$action = $input{'action'};
+$action = $inargs{'action'};
 
-$type = $input{'type'};
-$typeval = $input{'typeval'};
-$reason = $input{'reason'};
-$bantime = $input{'bantime'};
+$type = $inargs{'type'};
+$typeval = $inargs{'typeval'};
+$reason = $inargs{'reason'};
+$bantime = $inargs{'bantime'};
 
-$address = $input{'address'};
-$raport = $input{'raport'};
-$myuser = $input{'myuser'};
-$mypass = $input{'mypass'};
+$address = $inargs{'address'};
+$raport = $inargs{'raport'};
+$myuser = $inargs{'myuser'};
+$mypass = $inargs{'mypass'};
 
 $cmd='';
 $cmdcheck='';

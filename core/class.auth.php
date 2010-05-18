@@ -92,7 +92,7 @@ class AUTH {
         }
         $res = $this->DB->selectRow("
 				SELECT `account`.`id`,`username`,`sha_pass_hash`,`active`,`locked`, `gmlevel` FROM account
-				LEFT JOIN account_banned ON (account_banned.id=account.id AND account_banned.active=1) OR account_banned.id=''
+				LEFT JOIN account_banned ON (account_banned.id=account.id AND account_banned.active=1)
                 WHERE account.username = ?", $params['username']);
         if($res['id'] < 1){$success = 0;output_message('alert','Bad username or password');}
         if($res['active'] > 0){
@@ -249,7 +249,7 @@ class AUTH {
             SELECT * FROM account 
             LEFT JOIN account_extend ON account.id=account_extend.account_id 
             LEFT JOIN account_groups ON account_extend.g_id=account_groups.g_id 
-			LEFT JOIN account_banned ON (account_banned.id=account.id AND account_banned.active=1) OR account_banned.id=''
+			LEFT JOIN account_banned ON (account_banned.id=account.id AND account_banned.active=1)
             WHERE account.id=?d",$acct_id);
         return $res;
     }

@@ -19,20 +19,22 @@ if($_GET['realm']){
   $realm_info = get_realm_byid($_GET['realm']);
   $pathway_info[] = array('title'=>$realm_info['name'],'');
   $cc = 0;
+  $rid = (($realm_info['cloneid']== -1) ? $realm_info['id'] : $realm_info['cloneid']);
+  $rrealm_info = get_realm_byid($rid);
   
-  AddMangosFields ($realm_info['Version']);
-	$charinfo_link = $realm_info['WowdCharInfoLink'];
+  AddMangosFields ($rrealm_info['Version']);
+	$charinfo_link = $rrealm_info['WowdCharInfoLink'];
   
   $faction_alliance = 0;
   $faction_horde = 0;
   $total = 0;
     
-    if(check_port_status($realm_info['address'], $realm_info['port'])!==true) {
-        output_message('alert','Realm <b>'.$realm_info['name'].'</b> is offline <img src="images/downarrow2.gif" border="0" align="top">');
+    if(check_port_status($rrealm_info['address'], $rrealm_info['port'])!==true) {
+        output_message('alert','Realm <b>'.$rrealm_info['name'].'</b> is offline <img src="images/downarrow2.gif" border="0" align="top">');
     } else {
     
-        if(!$realm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
-        $wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
+        if(!$rrealm_info['CharacterDatabaseInfo'])output_message('alert','Check field <u>CharacterDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id']);
+        $wsdb_info = parse_worlddb_info($rrealm_info['CharacterDatabaseInfo']);
         
         if($DB)$query = $DB->select("SELECT c.*, a.*   FROM ".$wsdb_info['db'].".`characters` as c, `account` as a 
 																					WHERE ((c.`online`='1') AND (c.`account`=a.`id`)) 
@@ -79,5 +81,4 @@ if($_GET['realm']){
     unset($WSDB);
     }
 }
-
 ?>

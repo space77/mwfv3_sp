@@ -44,6 +44,14 @@ require_once 'core/common.php';
 					$pathway_info[] = array('title'=>$realm_info['name'],'link'=>'');
 				}
 			}
+			
+			if ($bResult){
+				if(!$realm_info['WorldDatabaseInfo']){
+					$strErrorMsg = 'Check field <u>WorldDatabaseInfo</u> in table `realmlist` for realm id='.$realm_info['id'];
+					$bResult = false;
+				}
+			}
+			
 		
 	   AddMangosFields ($realm_info['Version']);
 		
@@ -53,7 +61,7 @@ require_once 'core/common.php';
 	    	$wsdb_info = parse_worlddb_info($realm_info['CharacterDatabaseInfo']);
 	    	$WSDB = DbSimple_Generic::connect("".$config['db_type']."://".$wsdb_info['user'].":".$wsdb_info['password']."@".$wsdb_info['host'].":".$wsdb_info['port']."/".$wsdb_info['db']."");
 				if (!$WSDB){
-					$strErrorMsg = 'Not Connect';
+					$strErrorMsg = 'Not Connect to CharDB';
 					$bResult = false;
 				}    	
 			}
@@ -67,6 +75,27 @@ require_once 'core/common.php';
 					$bResult = false;
 				}
 			}
+			
+			if ($bResult){
+	    	$wddb_info = parse_worlddb_info($realm_info['WorldDatabaseInfo']);
+	    	$WDDB = DbSimple_Generic::connect("".$config['db_type']."://".$wddb_info['user'].":".$wddb_info['password']."@".$wddb_info['host'].":".$wddb_info['port']."/".$wddb_info['db']."");
+				if (!$WDDB){
+					$strErrorMsg = 'Not Connect to WorldDB';
+					$bResult = false;
+				}    	
+			}
+			
+			if ($bResult) {
+				$WDDB->setErrorHandler('databaseErrorHandler');
+	    	$WDDB->query("SET NAMES ".$config['db_encoding']);
+	    	$xp_for_next_level = $WDDB->selectCol("SELECT `lvl` AS ARRAY_KEY, `xp_for_next_level` AS `xp` FROM `player_xp_for_level` ORDER BY `lvl`");
+	    	if (!$xp_for_next_level) {
+	    		$strErrorMsg = 'Not query';
+					$bResult = false;
+				} else {
+				  $plrStat['xpnextlvl'] = $xp_for_next_level;
+        }
+			}
 
 			if ($bResult){
 					$res_info_myonline = false;
@@ -74,8 +103,7 @@ require_once 'core/common.php';
 					foreach ($query as $result) {
 	        	if($res_color==1)$res_color=2;else $res_color=1;
 	        	$cc++;     
-						
-						$my_char = new character($result, $mangos_field);
+						$my_char = new character($result, $mangos_field, $plrStat);
 						
 						$res_info[$cc]["guid"] = $my_char->guid;
 	        	$res_info[$cc]["number"] = $cc;
@@ -102,6 +130,7 @@ require_once 'core/common.php';
 			}
 			
 			unset($WSDB);
+			unset($WDDB);
 
 		} else if(($_GET['realm']) and ($_GET['action'] and $_GET['guid'])){
 			

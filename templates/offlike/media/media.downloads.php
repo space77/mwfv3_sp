@@ -1,4 +1,4 @@
-﻿<?Php
+<?Php
 
 
 error_reporting(0);

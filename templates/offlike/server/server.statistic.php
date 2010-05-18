@@ -191,7 +191,7 @@
                     </tr>
 					
 					<tr>
-						<td colspan="4" align="center"><img src="/img/hr.gif" alt="" /></td>
+						<td colspan="4" align="center"><img src="templates/<?=$config['template'];?>/images/hr.gif" width="100%" height="18px" alt="" /></td>
 					</tr>
 					<tr>
 						<td colspan="2" align="left">

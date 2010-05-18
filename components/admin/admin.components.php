@@ -88,7 +88,7 @@ if($_GET['action']=='mfupdate'){
 
 function ParseUpdateFields ($UpdateFieldsFile, $OutFileName) {
 
-	chmod('core/cache/',0777);
+	chmod('./core/cache/',0777);
 	
 	$str ='';
 	$rows = file($UpdateFieldsFile);
@@ -97,7 +97,6 @@ function ParseUpdateFields ($UpdateFieldsFile, $OutFileName) {
 	$fh = fopen($myFile, 'w');
 	fwrite($fh, "<?php\n\n\n\n\n");
 	fwrite($fh, "global \$mangos_field; \n");
-
 	//fwrite($fh, "\$mangos_field = array(");
 	fclose($fh);
 	$fh = fopen($myFile, 'a');
